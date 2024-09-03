@@ -1,0 +1,50 @@
+server:
+  servlet:
+    encoding:
+      charset: utf-8
+      force: true
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/voicetuner
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ohgiraffers
+    password: ohgiraffers
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+      default_batch_fetch_size: 100
+    open-in-view: false
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            clientId: 92b3e5f16e982fe5395ba97c4bdf34f0 # Token
+            client-secret: bPvSGt3CYFfPuc0jlIPOwJxaD4MyJk5l # Client Secret
+            redirect_uri: http://localhost:8080/api/auth/kakao/login # https://developers.kakao.com/console/app/1127496/product/login
+            authorization-grant-type: authorization_code
+            scope: [ profile, account_email ]
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            tokenUri: https://kauth.kakao.com/oauth/token
+            userInfoUri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
+jwt:
+  secret: 7ZmA656AIOuTneygkOyZlSDquLDsm5AgMeydvOywqALdlsKJL3234jklsdjfaKJDLnflkasdf
+
+logging:
+  level:
+    '[company.gonggam]': DEBUG
+    '[org.hibernate.type]': TRACE
+
+python:
+  server:
+    url: http://172.16.17.243:8000
