@@ -57,7 +57,18 @@ dependencies {
     // 유효성 검사
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-//	implementation "io.jsonwebtoken:jjwt:0.9.1"
+    //	implementation "io.jsonwebtoken:jjwt:0.9.1"
+
+    //webClient
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+
+    testImplementation 'com.squareup.okhttp3:okhttp:4.9.3'
+    testImplementation 'com.squareup.okhttp3:mockwebserver:4.9.3'
 
     //기타
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
