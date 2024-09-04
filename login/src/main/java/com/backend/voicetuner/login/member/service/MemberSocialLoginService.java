@@ -53,17 +53,19 @@ public class MemberSocialLoginService {
     @Transactional
     public MemberResponseDTO.authTokenDTO kakaoLogin(String code) {
         System.out.println("kakaoLogin 시작");
-        // 토큰 발급
+
+        // 카카오로부터 액세스 토큰 발급
         String accessToken = generateAccessToken(code);
 
-        // 사용자 정보
+        // 액세스 토큰을 사용하여 카카오 사용자 프로필 가져오기
         MemberResponseDTO.KakaoInfoDTO profile = getKakaoProfile(accessToken);
         System.out.println("프로필 " + profile);
 
-        // 회원 확인
+        // 사용자가 이미 존재하는지 확인하고 없으면 새로운 사용자 생성
         Member member = memberService.findMemberByEmail(profile.kakaoAccount().email())
                 .orElseGet(() -> kakaoSignUp(profile));
 
+        // JWT 토큰 생성 및 반환
         return getSocialAuthTokenDTO(member);
     }
 
