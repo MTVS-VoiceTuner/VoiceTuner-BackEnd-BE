@@ -52,6 +52,8 @@ public class MemberSocialLoginController {
     public ResponseEntity<?> kakaoLogin(@RequestParam(name = "code") String code) {
         System.out.println(code);
 
+        System.out.println("here");
+
         // 카카오 인증 코드 수신 후 로그인 처리
         MemberResponseDTO.authTokenDTO responseDTO = memberSocialLoginService.kakaoLogin(code);
 
