@@ -46,7 +46,7 @@ public class MemberSocialLoginService {
     private final KakaoRegistrationProperties kakaoRegistrationProperties;
 
 
-    /*
+    /**
         카카오 로그인
      */
     // 카카오로부터 받은 최신 사용자 정보로 데이터베이스 내의 사용자 정보를 갱신할 필요가 있을까?
@@ -69,6 +69,9 @@ public class MemberSocialLoginService {
         return getSocialAuthTokenDTO(member);
     }
 
+    /**
+     카카오 액세스 토큰 받기
+     */
     private String generateAccessToken(String code) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -93,6 +96,9 @@ public class MemberSocialLoginService {
         return response.getBody().accessToken();
     }
 
+    /**
+     카카오회원 프로필 정보 가져오기
+     */
     private MemberResponseDTO.KakaoInfoDTO getKakaoProfile(String accessToken) {
 
         HttpHeaders headers = new HttpHeaders();
@@ -112,6 +118,9 @@ public class MemberSocialLoginService {
         return response.getBody();
     }
 
+    /**
+     카카오 회원가입
+     */
     protected Member kakaoSignUp(MemberResponseDTO.KakaoInfoDTO profile) {
         log.info("카카오 회원 생성 : " + profile.kakaoAccount().email());
 
@@ -129,6 +138,9 @@ public class MemberSocialLoginService {
         return member;
     }
 
+    /**
+     소셜 로그인 회원 토큰 생성
+     */
     private MemberResponseDTO.authTokenDTO getSocialAuthTokenDTO(Member member) {
         UserDetails userDetails = new User(member.getEmail(), "",
                 Collections.singletonList(new SimpleGrantedAuthority(member.getAuthority().toString())));
