@@ -25,9 +25,9 @@ spring:
       client:
         registration:
           kakao:
-            clientId: 92b3e5f16e982fe5395ba97c4bdf34f0 # Token
-            client-secret: bPvSGt3CYFfPuc0jlIPOwJxaD4MyJk5l # Client Secret
-            redirect_uri: http://localhost:8080/api/auth/kakao/login # https://developers.kakao.com/console/app/1127496/product/login
+            clientId: 407d05ce2e2978cf9622c3690de2fe11 # Token
+            client-secret: GmwYUmfLps6I8MLhj3iBEiKYwCOqi7AN # Client Secret
+            redirect_uri: http://192.168.0.57:8080/api/auth/kakao/login # https://developers.kakao.com/console/app/1127496/product/login
             authorization-grant-type: authorization_code
             scope: [ profile, account_email ]
         provider:
