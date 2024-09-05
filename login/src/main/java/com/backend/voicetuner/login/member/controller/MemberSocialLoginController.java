@@ -31,7 +31,7 @@ public class MemberSocialLoginController {
     private String kakaoRedirectUri;
 
 
-    // https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=262c56061ee06d4004d2f9b94db133a4&redirect_uri=http://localhost:8080/api/auth/kakao/login
+    // https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=92b3e5f16e982fe5395ba97c4bdf34f0&redirect_uri=http://localhost:8080/api/auth/kakao/login
 
     /**
         카카오 로그인 리디렉션
