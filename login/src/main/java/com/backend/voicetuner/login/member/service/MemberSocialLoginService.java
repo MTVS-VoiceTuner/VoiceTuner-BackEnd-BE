@@ -46,27 +46,32 @@ public class MemberSocialLoginService {
     private final KakaoRegistrationProperties kakaoRegistrationProperties;
 
 
-    /*
+    /**
         카카오 로그인
      */
     // 카카오로부터 받은 최신 사용자 정보로 데이터베이스 내의 사용자 정보를 갱신할 필요가 있을까?
     @Transactional
     public MemberResponseDTO.authTokenDTO kakaoLogin(String code) {
         System.out.println("kakaoLogin 시작");
-        // 토큰 발급
+
+        // 카카오로부터 액세스 토큰 발급
         String accessToken = generateAccessToken(code);
 
-        // 사용자 정보
+        // 액세스 토큰을 사용하여 카카오 사용자 프로필 가져오기
         MemberResponseDTO.KakaoInfoDTO profile = getKakaoProfile(accessToken);
         System.out.println("프로필 " + profile);
 
-        // 회원 확인
+        // 사용자가 이미 존재하는지 확인하고 없으면 새로운 사용자 생성
         Member member = memberService.findMemberByEmail(profile.kakaoAccount().email())
                 .orElseGet(() -> kakaoSignUp(profile));
 
+        // JWT 토큰 생성 및 반환
         return getSocialAuthTokenDTO(member);
     }
 
+    /**
+     카카오 액세스 토큰 받기
+     */
     private String generateAccessToken(String code) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -91,6 +96,9 @@ public class MemberSocialLoginService {
         return response.getBody().accessToken();
     }
 
+    /**
+     카카오회원 프로필 정보 가져오기
+     */
     private MemberResponseDTO.KakaoInfoDTO getKakaoProfile(String accessToken) {
 
         HttpHeaders headers = new HttpHeaders();
@@ -110,6 +118,9 @@ public class MemberSocialLoginService {
         return response.getBody();
     }
 
+    /**
+     카카오 회원가입
+     */
     protected Member kakaoSignUp(MemberResponseDTO.KakaoInfoDTO profile) {
         log.info("카카오 회원 생성 : " + profile.kakaoAccount().email());
 
@@ -127,6 +138,9 @@ public class MemberSocialLoginService {
         return member;
     }
 
+    /**
+     소셜 로그인 회원 토큰 생성
+     */
     private MemberResponseDTO.authTokenDTO getSocialAuthTokenDTO(Member member) {
         UserDetails userDetails = new User(member.getEmail(), "",
                 Collections.singletonList(new SimpleGrantedAuthority(member.getAuthority().toString())));
