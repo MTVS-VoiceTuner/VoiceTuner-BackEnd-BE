@@ -6,7 +6,13 @@ import jakarta.validation.constraints.Pattern;
 
 public class MemberRequestDTO {
 
-    // 기본 회원 가입
+    /** 기본 회원 가입
+     * @param name
+     * @param email
+     * @param password
+     * @param confirmPassword
+     * @param gender
+     */
     public record signUpDTO(
             @NotBlank(message = "이름을 입력해 주세요.")
             String name,
@@ -20,7 +26,10 @@ public class MemberRequestDTO {
     ) {
     }
 
-    // 기본 로그인
+    /** 기본 로그인
+     * @param email
+     * @param password
+     */
     public record loginDTO(
             @Email(message = "올바른 이메일 주소를 입력해 주세요.")
             @NotBlank(message = "이메일을 입력해 주세요.")

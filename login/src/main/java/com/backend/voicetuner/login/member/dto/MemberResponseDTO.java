@@ -6,7 +6,14 @@ import java.time.LocalDateTime;
 
 public class MemberResponseDTO {
 
-    // 토큰 발급
+    /** 토큰 발급
+     * @param grantType
+     * @param accessToken
+     * @param accessTokenValidTime
+     * @param refreshToken
+     * @param refreshTokenValidTime
+     */
+
     public record authTokenDTO(
             String grantType,
             String accessToken,
@@ -16,6 +23,11 @@ public class MemberResponseDTO {
     ) {
     }
 
+    /** 카카오 프로필
+     * @param nickname
+     * @param email
+     * @param gender
+     */
     public record KakaoProfile(
             String nickname,
             String email,
@@ -23,7 +35,15 @@ public class MemberResponseDTO {
     ){
     }
 
-    // Kakao Token
+    /** Kakao Token
+     * @param tokenType
+     * @param accessToken
+     * @param refreshToken
+     * @param idToken
+     * @param expiresIn
+     * @param refreshTokenExpiresIn
+     * @param scope
+     */
     public record KakaoTokenDTO(
             @JsonProperty("token_type")
             String tokenType,

@@ -26,7 +26,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    /*
+    /**
           기본 회원 가입
        */
     @Operation(summary = "회원 가입", description = "회원 가입을 처리합니다.")
@@ -39,7 +39,7 @@ public class MemberController {
     }
 
 
-    /*
+    /**
          기본 로그인
       */
     @Operation(summary = "로그인", description = "회원 로그인을 처리하고 인증 토큰을 발급합니다.")
@@ -51,7 +51,7 @@ public class MemberController {
         return ResponseEntity.ok().body(ApiUtils.success(responseDTO));
     }
 
-    /*
+    /**
        Access Token 재발급 - Refresh Token 필요
     */
     @Operation(summary = "토큰 재발급", description = "Refresh Token을 사용하여 Access Token을 재발급합니다.")
@@ -63,7 +63,7 @@ public class MemberController {
         return ResponseEntity.ok().body(ApiUtils.success(responseDTO));
     }
 
-    /*
+    /**
         로그아웃 - Refresh Token 필요
      */
     @Operation(summary = "로그아웃", description = "Refresh Token을 사용하여 로그아웃을 처리합니다.")
