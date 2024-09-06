@@ -1,4 +1,4 @@
-package com.midnight.e5project.config;
+package com.backend.voicetuner.voicmodule.config;
 
 import java.util.Base64;
 

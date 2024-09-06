@@ -1,6 +1,6 @@
-package com.midnight.e5project.model.config;
+package com.backend.voicetuner.voicmodule.model.config;
 
-import com.midnight.e5project.exception.InternalServerException;
+import com.backend.voicetuner.voicmodule.exception.InternalServerException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatusCode;
