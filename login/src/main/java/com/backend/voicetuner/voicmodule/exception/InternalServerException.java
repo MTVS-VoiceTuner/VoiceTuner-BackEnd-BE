@@ -1,4 +1,4 @@
-package com.midnight.e5project.exception;
+package com.backend.voicetuner.voicmodule.exception;
 
 public class InternalServerException extends RuntimeException {
 

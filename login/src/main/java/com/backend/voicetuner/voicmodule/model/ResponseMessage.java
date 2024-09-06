@@ -1,4 +1,4 @@
-package com.midnight.e5project.model;
+package com.backend.voicetuner.voicmodule.model;
 
 import lombok.*;
 

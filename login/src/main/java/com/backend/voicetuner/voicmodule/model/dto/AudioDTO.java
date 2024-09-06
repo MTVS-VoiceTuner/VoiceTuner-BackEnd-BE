@@ -1,8 +1,6 @@
-package com.midnight.e5project.model.dto;
+package com.backend.voicetuner.voicmodule.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.Setter;
 
 public class AudioDTO {
 

@@ -1,4 +1,4 @@
-package com.midnight.e5project.model.config;
+package com.backend.voicetuner.voicmodule.model.config;
 
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
