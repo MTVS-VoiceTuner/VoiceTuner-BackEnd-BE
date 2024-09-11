@@ -48,6 +48,9 @@ dependencies {
     // Swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4'
 
+    // dotenv
+    implementation 'io.github.cdimascio:java-dotenv:5.2.2'
+
     //oauth2
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 

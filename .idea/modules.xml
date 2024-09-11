@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/VoiceTuner-BackEnd-BE.iml" filepath="$PROJECT_DIR$/.idea/VoiceTuner-BackEnd-BE.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/voicetuner.main.iml" filepath="$PROJECT_DIR$/.idea/modules/voicetuner.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/voicetuner.test.iml" filepath="$PROJECT_DIR$/.idea/modules/voicetuner.test.iml" />
     </modules>
   </component>
 </project>

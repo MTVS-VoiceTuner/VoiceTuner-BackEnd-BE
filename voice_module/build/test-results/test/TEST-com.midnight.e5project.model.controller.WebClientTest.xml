@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.midnight.e5project.model.controller.WebClientTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-08-21T07:22:03" hostname="MSI" time="5.531">
+  <properties/>
+  <testcase name="testPostSync()" classname="com.midnight.e5project.model.controller.WebClientTest" time="5.531"/>
+  <system-out><![CDATA[16:21:58.941 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.midnight.e5project.model.controller.WebClientTest]: WebClientTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+16:21:59.075 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.midnight.e5project.E5ProjectApplication for test class com.midnight.e5project.model.controller.WebClientTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.8)
+
+2024-08-21T16:21:59.403+09:00  INFO 31040 --- [    Test worker] c.m.e.model.controller.WebClientTest     : Starting WebClientTest using Java 17.0.12 with PID 31040 (started by 2ee42 in C:\Lecture\project\midnight-camp\e5-project)
+2024-08-21T16:21:59.405+09:00  INFO 31040 --- [    Test worker] c.m.e.model.controller.WebClientTest     : No active profile set, falling back to 1 default profile: "default"
+2024-08-21T16:22:00.030+09:00  INFO 31040 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-08-21T16:22:00.129+09:00  INFO 31040 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 92 ms. Found 1 JPA repository interface.
+2024-08-21T16:22:00.514+09:00  INFO 31040 --- [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-08-21T16:22:00.560+09:00  INFO 31040 --- [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.9.Final
+2024-08-21T16:22:00.584+09:00  INFO 31040 --- [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-08-21T16:22:00.779+09:00  INFO 31040 --- [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-08-21T16:22:00.800+09:00  INFO 31040 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-08-21T16:22:01.030+09:00  INFO 31040 --- [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@543ac221
+2024-08-21T16:22:01.032+09:00  INFO 31040 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-08-21T16:22:01.069+09:00  WARN 31040 --- [    Test worker] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-08-21T16:22:01.759+09:00  INFO 31040 --- [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: alter table reaction drop foreign key FK8imnvxrtg418no0hxi3kc9re9
+Hibernate: alter table slide drop foreign key FKi1fd9f1srhp27g7ja3sosc0ew
+Hibernate: drop table if exists presentation
+Hibernate: drop table if exists presentation_seq
+Hibernate: drop table if exists reaction
+Hibernate: drop table if exists slide
+Hibernate: drop table if exists slide_seq
+Hibernate: create table presentation (ppt_id integer not null, created_at datetime(6), title varchar(255), primary key (ppt_id)) engine=InnoDB
+Hibernate: create table presentation_seq (next_val bigint) engine=InnoDB
+Hibernate: insert into presentation_seq values ( 1 )
+Hibernate: create table reaction (slide_id integer, id bigint not null auto_increment, reaction_type enum ('BAD','GOOD','SOSO'), primary key (id)) engine=InnoDB
+Hibernate: create table slide (presentation_id integer, slide_number integer not null, audio_file_path varchar(255), slide_note varchar(255), video_file_path varchar(255), slide_image tinyblob, primary key (slide_number)) engine=InnoDB
+Hibernate: create table slide_seq (next_val bigint) engine=InnoDB
+Hibernate: insert into slide_seq values ( 1 )
+Hibernate: alter table reaction add constraint FK8imnvxrtg418no0hxi3kc9re9 foreign key (slide_id) references slide (slide_number)
+Hibernate: alter table slide add constraint FKi1fd9f1srhp27g7ja3sosc0ew foreign key (presentation_id) references presentation (ppt_id)
+2024-08-21T16:22:01.949+09:00  INFO 31040 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-08-21T16:22:02.655+09:00  WARN 31040 --- [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-08-21T16:22:03.180+09:00  INFO 31040 --- [    Test worker] c.m.e.model.controller.WebClientTest     : Started WebClientTest in 3.987 seconds (process running for 4.915)
+서버 응답: {"edit_script_result":"안녕하세요, 여러분. 오늘은 스크린샷에 대해 이야기해보겠습니다.\n\n스크린샷이란, 컴퓨터 모니터나 스마트폰 등 전자기기의 화면을 그대로 캡처한 이미지를 의미합니다. 일반적인 사진과는 달리, 스크린샷은 텍스트만 존재하는 경우가 많거나 이미지와 텍스트가 혼합된 형태로 나타납니다.\n\n사람들이 스크린샷을 사용하는 이유는 무엇일까요? 바로 특정 앱을 열거나 인터넷 검색을 하지 않고도, 휴대폰의 갤러리에서 쉽게 접근할 수 있는 정보를 빠르게 저장할 수 있기 때문입니다. 이는 정보의 접근성을 높여주고, 필요한 내용을 즉시 기록할 수 있는 장점을 제공합니다.\n\n하지만 스크린샷에는 한 가지 문제점이 있습니다. 다양한 정보가 통일성 없이 나열되어 있어, 원하는 내용을 찾기가 어려운 경우가 많습니다. 이러한 점을 개선하기 위한 방법에 대해 함께 고민해보면 좋겠습니다.\n\n감사합니다."}
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
