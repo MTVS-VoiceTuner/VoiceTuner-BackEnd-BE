@@ -101,7 +101,7 @@ public class VoiceController {
     }
 
 
-    // 한소절 전송
+    // 한곡 전송
     @PostMapping("/sendSong")
     public String sendSong(@RequestPart() MultipartFile file) throws IOException {
 
@@ -131,7 +131,8 @@ public class VoiceController {
     }
 
     // 원본 파일 전송
-    /*@PostMapping("/sendOriginSong")
+    /*
+    @PostMapping("/sendOriginSong")
     public String testPost(
             // @RequestPart 어노테이션은 요청의 일부인 멀티파트 파일을 매개변수로 받습니다.
             @RequestPart() MultipartFile file,
@@ -162,6 +163,7 @@ public class VoiceController {
                 .retrieve() // 응답을 검색합니다.
                 .bodyToMono(String.class) // 응답 본문을 String 타입으로 변환합니다.
                 .block(); // 비동기 작업이 완료될 때까지 현재 스레드를 차단합니다.
-    }*/
+    }
+    */
 
 }
