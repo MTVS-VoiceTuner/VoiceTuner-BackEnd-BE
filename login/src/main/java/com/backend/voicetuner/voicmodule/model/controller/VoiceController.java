@@ -130,6 +130,35 @@ public class VoiceController {
         }
     }
 
+    //
+    @PostMapping("/sendOriginVerse")
+    public String testVerse(
+            @RequestPart() MultipartFile file,
+            @RequestHeader("content-type") String contentType,
+            @RequestHeader("content-length") String contentLength) throws IOException {
+
+        System.out.println("contentType:{}"+ contentType);
+        System.out.println("contentLength:{}"+ contentLength);
+
+        MultipartBodyBuilder builder = new MultipartBodyBuilder();
+        builder.part("audio_file", file.getResource());
+
+        return webClient.method(HttpMethod.POST)
+                .uri("https://crappie-emerging-logically.ngrok-free.app/vocal/upload-wav")
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .body(BodyInserters.fromMultipartData(builder.build()))
+                .httpRequest(request -> {
+
+                    HttpClientRequest reactorRequest = request.getNativeRequest();
+                    reactorRequest.responseTimeout(Duration.ofDays(3));
+                })
+
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+
+    }
+
     // 원본 파일 전송
     /*
     @PostMapping("/sendOriginSong")
