@@ -2,6 +2,7 @@ package com.backend.voicetuner.voicmodule.model.controller;
 
 import com.backend.voicetuner.voicmodule.model.config.WebClientUtil;
 import com.backend.voicetuner.voicmodule.model.dto.AudioDTO;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -102,6 +103,7 @@ public class VoiceController {
 
 
     // 한곡 전송
+
     @PostMapping("/sendSong")
     public String sendSong(@RequestPart() MultipartFile file) throws IOException {
 
@@ -130,15 +132,52 @@ public class VoiceController {
         }
     }
 
-    //
-    @PostMapping("/sendOriginVerse")
+    // wav 파일로 한 소절 보내기
+    @Operation(summary = "wav 한 소절 전송", description = "이거 테스트 해야함")
+    @PostMapping(value = "/sendOriginVerse") // , produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     public String testVerse(
-            @RequestPart() MultipartFile file,
+            @RequestPart("audio_file") MultipartFile file,
             @RequestHeader("content-type") String contentType,
-            @RequestHeader("content-length") String contentLength) throws IOException {
+            @RequestHeader("content-length") String contentLength
+    ) throws IOException {
 
-        System.out.println("contentType:{}"+ contentType);
-        System.out.println("contentLength:{}"+ contentLength);
+System.out.printf("contentType:%s%n", contentType);
+System.out.printf("contentLength:%s%n", contentLength);
+
+        MultipartBodyBuilder builder = new MultipartBodyBuilder();
+        builder.part("audio_file", file.getResource());
+
+        return webClient.method(HttpMethod.POST)
+                .uri("https://crappie-emerging-logically.ngrok-free.app/vocal/upload-wav")
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .body(BodyInserters.fromMultipartData(builder.build()))
+                .httpRequest(request -> {
+
+                    HttpClientRequest reactorRequest = request.getNativeRequest();
+                    reactorRequest.responseTimeout(Duration.ofDays(3));
+                })
+
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+
+    }
+
+
+
+    // wav 파일로 전체 곡 보내기
+    // @RequestHeader("content-type") String contentType,
+    // @RequestHeader("content-length") String contentLength
+    @Operation(summary = "wav 전체 곡 전송", description = "이거 테스트 해야함")
+    @PostMapping(value = "/sendOriginSong", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String testSong(
+            @ModelAttribute("audio_file") MultipartFile file,
+            @RequestHeader("content-type") String contentType,
+            @RequestHeader("content-length") String contentLength
+    ) throws IOException {
+
+//        System.out.printf("contentType:%s%n", contentType);
+//        System.out.printf("contentLength:%s%n", contentLength);
 
         MultipartBodyBuilder builder = new MultipartBodyBuilder();
         builder.part("audio_file", file.getResource());
