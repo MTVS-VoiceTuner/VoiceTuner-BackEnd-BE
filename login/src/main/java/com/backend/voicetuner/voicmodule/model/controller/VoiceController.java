@@ -134,15 +134,15 @@ public class VoiceController {
 
     // wav 파일로 한 소절 보내기
     @Operation(summary = "wav 한 소절 전송", description = "이거 테스트 해야함")
-    @PostMapping(value = "/sendOriginVerse") // , produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    @PostMapping(value = "/sendOriginVerse", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String testVerse(
-            @RequestPart("audio_file") MultipartFile file,
             @RequestHeader("content-type") String contentType,
-            @RequestHeader("content-length") String contentLength
-    ) throws IOException {
+            @RequestHeader("content-length") String contentLength,
+            @RequestPart("audio_file") MultipartFile file
+        ) throws IOException {
 
-System.out.printf("contentType:%s%n", contentType);
-System.out.printf("contentLength:%s%n", contentLength);
+        System.out.printf("contentType:%s%n", contentType);
+        System.out.printf("contentLength:%s%n", contentLength);
 
         MultipartBodyBuilder builder = new MultipartBodyBuilder();
         builder.part("audio_file", file.getResource());
@@ -171,9 +171,9 @@ System.out.printf("contentLength:%s%n", contentLength);
     @Operation(summary = "wav 전체 곡 전송", description = "이거 테스트 해야함")
     @PostMapping(value = "/sendOriginSong", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public String testSong(
-            @ModelAttribute("audio_file") MultipartFile file,
             @RequestHeader("content-type") String contentType,
-            @RequestHeader("content-length") String contentLength
+            @RequestHeader("content-length") String contentLength,
+            @ModelAttribute("audio_file") MultipartFile file
     ) throws IOException {
 
 //        System.out.printf("contentType:%s%n", contentType);
