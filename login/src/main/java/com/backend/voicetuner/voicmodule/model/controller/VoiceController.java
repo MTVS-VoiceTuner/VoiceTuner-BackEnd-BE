@@ -173,11 +173,8 @@ public class VoiceController {
     public String testSong(
             @RequestHeader("content-type") String contentType,
             @RequestHeader("content-length") String contentLength,
-            @ModelAttribute("audio_file") MultipartFile file
+            @RequestPart("audio_file") MultipartFile file
     ) throws IOException {
-
-//        System.out.printf("contentType:%s%n", contentType);
-//        System.out.printf("contentLength:%s%n", contentLength);
 
         MultipartBodyBuilder builder = new MultipartBodyBuilder();
         builder.part("audio_file", file.getResource());

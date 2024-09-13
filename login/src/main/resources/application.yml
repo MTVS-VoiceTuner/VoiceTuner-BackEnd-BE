@@ -15,6 +15,7 @@ spring:
     password: ohgiraffers
   servlet:
     multipart:
+      enabled: true
       maxFileSize: 128MB
       maxRequestSize: 128MB
   jpa:
