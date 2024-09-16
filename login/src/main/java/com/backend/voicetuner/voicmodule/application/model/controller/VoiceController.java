@@ -1,7 +1,7 @@
-package com.backend.voicetuner.voicmodule.model.controller;
+package com.backend.voicetuner.voicmodule.application.model.controller;
 
-import com.backend.voicetuner.voicmodule.model.config.WebClientUtil;
-import com.backend.voicetuner.voicmodule.model.dto.AudioDTO;
+import com.backend.voicetuner.voicmodule.application.model.config.WebClientUtil;
+import com.backend.voicetuner.voicmodule.application.model.dto.AudioDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
