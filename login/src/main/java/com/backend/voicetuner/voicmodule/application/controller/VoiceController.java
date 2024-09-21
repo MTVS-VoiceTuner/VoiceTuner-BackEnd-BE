@@ -61,8 +61,10 @@ public class VoiceController {
     // @PostMapping 어노테이션은 HTTP POST 요청을 해당 경로로 매핑합니다.
 
     // WebClient 설정: 응답 사이즈 제한 늘리기 및 타임아웃 설정
+    // 인코딩 방식
+/*
 
-    // 한소절 전달
+    // 인코딩 후 한 소절 전송
     @PostMapping("/sendVerse")
     public ResponseEntity<String> sendVerse(@RequestBody AudioDTO audioDTO) {
 
@@ -101,9 +103,7 @@ public class VoiceController {
 
     }
 
-
-    // 한곡 전송
-
+    // 인코딩 후 한곡 전송
     @PostMapping("/sendSong")
     public String sendSong(@RequestPart() MultipartFile file) throws IOException {
 
@@ -131,6 +131,7 @@ public class VoiceController {
             return "Error: " + e.getMessage();
         }
     }
+*/
 
     // wav 파일로 한 소절 보내기
     @Operation(summary = "wav 한 소절 전송", description = "이거 테스트 해야함")
@@ -139,7 +140,7 @@ public class VoiceController {
             @RequestHeader("content-type") String contentType,
             @RequestHeader("content-length") String contentLength,
             @RequestPart("audio_file") MultipartFile file
-        ) throws IOException {
+    ) throws IOException {
 
         System.out.printf("contentType:%s%n", contentType);
         System.out.printf("contentLength:%s%n", contentLength);
@@ -147,8 +148,10 @@ public class VoiceController {
         MultipartBodyBuilder builder = new MultipartBodyBuilder();
         builder.part("audio_file", file.getResource());
 
+        //
+        // /upload-wav-feedback // 피드백 전송 uri
         return webClient.method(HttpMethod.POST)
-                .uri("https://crappie-emerging-logically.ngrok-free.app/vocal/upload-wav")
+                .uri("https://crappie-emerging-logically.ngrok-free.app/vocal/upload-wav-feedback")
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(BodyInserters.fromMultipartData(builder.build()))
                 .httpRequest(request -> {
@@ -162,7 +165,6 @@ public class VoiceController {
                 .block();
 
     }
-
 
 
     // wav 파일로 전체 곡 보내기
@@ -180,9 +182,8 @@ public class VoiceController {
         builder.part("audio_file", file.getResource());
 
 
-
         return webClient.method(HttpMethod.POST)
-                .uri("https://crappie-emerging-logically.ngrok-free.app/vocal/upload-wav")
+                .uri("https://crappie-emerging-logically.ngrok-free.app/vocal/upload-wav-feedback")
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(BodyInserters.fromMultipartData(builder.build()))
                 .httpRequest(request -> {
