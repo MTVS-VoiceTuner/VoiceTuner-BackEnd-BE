@@ -6,6 +6,7 @@ import com.backend.voicetuner.voicmodule.domain.solution.repository.SolutionRepo
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,20 +31,25 @@ public class SolutionService {
     }
 
     @Transactional
-    public Solution updateSolution(Solution solution) {
-        if (solution == null) {
+    public SolutionDTO updateSolution(Long userId, Long songId, SolutionDTO solutionDTO) {
+        if (solutionDTO == null) {
             return null;
         }
 
-        Solution target = solutionRepository.findByUserIdAndSongId(solution.getUserId(), solution.getSongId());
+        Solution target = solutionRepository.findByUserIdAndSongId(userId, songId);
 
-        if (target != null) {
-            target.setBeatScore(solution.getBeatScore());
-            target.setPitchScore(solution.getPitchScore());
-            target.setVocalRange(solution.getVocalRange());
-            target.setTotalScore(solution.getTotalScore());
+        if (target == null) {
+            target = new Solution();
+            target.setUserId(userId);
+            target.setSongId(songId);
         }
-        return solutionRepository.save(solution);
+        target.setBeatScore(solutionDTO.getBeatScore());
+        target.setPitchScore(solutionDTO.getPitchScore());
+        target.setVocalRange(solutionDTO.getVocalRange());
+        target.setTotalScore(solutionDTO.getTotalScore());
+        solutionRepository.save(target);
+
+        return solutionDTO;
 
     }
 
@@ -57,8 +63,39 @@ public class SolutionService {
         return solutionRepository.findByUserIdAndSongId(userId, songId);
     }
 
-    public List<Solution> findSolutionsByUserId(Long userId) {
-        return solutionRepository.findAllByUserId(userId);
+    public List<SolutionDTO> findSolutionsByUserId(Long userId) {
+        List<SolutionDTO> result = new ArrayList<>();
+        List<Solution> finds = solutionRepository.findAllByUserId(userId);
+
+        for (Solution solution : finds) {
+            result.add(
+                    new SolutionDTO(
+                            solution.getBeatScore(),
+                            solution.getPitchScore(),
+                            solution.getVocalRange(),
+                            solution.getTotalScore()
+                    )
+            );
+        }
+        return result;
+    }
+
+    public SolutionDTO findSolutionBySongId(Long userId, Long songId) {
+
+        SolutionDTO result = null;
+
+        Solution solution = solutionRepository.findByUserIdAndSongId(userId, songId);
+
+        if (solution != null) {
+            result = new SolutionDTO(
+                    solution.getBeatScore(),
+                    solution.getPitchScore(),
+                    solution.getVocalRange(),
+                    solution.getTotalScore()
+            );
+        }
+
+        return result;
     }
 
 }
