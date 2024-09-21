@@ -1,4 +1,4 @@
-package com.backend.voicetuner.voicmodule.application.model.dto;
+package com.backend.voicetuner.voicmodule.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

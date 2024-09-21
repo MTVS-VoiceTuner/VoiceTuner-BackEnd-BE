@@ -1,4 +1,4 @@
-package com.backend.voicetuner.voicmodule.application.model.dto;
+package com.backend.voicetuner.voicmodule.application.dto;
 
 public class SolutionDTO {
     private int beatScore;

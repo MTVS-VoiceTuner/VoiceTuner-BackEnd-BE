@@ -1,4 +1,4 @@
-package com.backend.voicetuner.voicmodule.application.model.config;
+package com.backend.voicetuner.voicmodule.application.config;
 
 import com.backend.voicetuner.voicmodule.exception.InternalServerException;
 import lombok.RequiredArgsConstructor;

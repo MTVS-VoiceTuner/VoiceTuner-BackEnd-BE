@@ -1,6 +1,6 @@
-package com.backend.voicetuner.voicmodule.domain.repository;
+package com.backend.voicetuner.voicmodule.domain.solution.repository;
 
-import com.backend.voicetuner.voicmodule.domain.model.Solution;
+import com.backend.voicetuner.voicmodule.domain.solution.model.Solution;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

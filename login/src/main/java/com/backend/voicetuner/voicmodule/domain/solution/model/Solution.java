@@ -1,4 +1,4 @@
-package com.backend.voicetuner.voicmodule.domain.model;
+package com.backend.voicetuner.voicmodule.domain.solution.model;
 
 import jakarta.persistence.*;
 
@@ -23,14 +23,14 @@ public class Solution {
     public int pitchScore;
 
     @Column(name="VOCAL_RANGE")
-    public int vocalRange;
+    public String vocalRange;
 
     @Column(name="TOTAL_SCORE")
     public int totalScore;
 
     public Solution() {}
 
-    public Solution(Long userId, Long songId, int beatScore, int pitchScore, int vocalRange, int totalScore) {
+    public Solution(Long userId, Long songId, int beatScore, int pitchScore, String vocalRange, int totalScore) {
         this.userId = userId;
         this.songId = songId;
         this.beatScore = beatScore;
@@ -59,12 +59,20 @@ public class Solution {
         return pitchScore;
     }
 
-    public int getVocalRange() {
+    public String getVocalRange() {
         return vocalRange;
     }
 
     public int getTotalScore() {
         return totalScore;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public void setSongId(Long songId) {
+        this.songId = songId;
     }
 
     public void setBeatScore(int beatScore) {
@@ -75,7 +83,7 @@ public class Solution {
         this.pitchScore = pitchScore;
     }
 
-    public void setVocalRange(int vocalRange) {
+    public void setVocalRange(String vocalRange) {
         this.vocalRange = vocalRange;
     }
 
@@ -91,8 +99,10 @@ public class Solution {
                 ", songId=" + songId +
                 ", beatScore=" + beatScore +
                 ", pitchScore=" + pitchScore +
-                ", vocalRange=" + vocalRange +
+                ", vocalRange='" + vocalRange + '\'' +
                 ", totalScore=" + totalScore +
                 '}';
     }
 }
+
+

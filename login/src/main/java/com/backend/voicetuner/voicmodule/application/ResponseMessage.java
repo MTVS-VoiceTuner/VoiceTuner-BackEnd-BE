@@ -1,4 +1,4 @@
-package com.backend.voicetuner.voicmodule.application.model;
+package com.backend.voicetuner.voicmodule.application;
 
 import lombok.*;
 

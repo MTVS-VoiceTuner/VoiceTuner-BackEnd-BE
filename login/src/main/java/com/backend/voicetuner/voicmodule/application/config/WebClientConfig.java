@@ -1,4 +1,4 @@
-package com.backend.voicetuner.voicmodule.application.model.config;
+package com.backend.voicetuner.voicmodule.application.config;
 
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;

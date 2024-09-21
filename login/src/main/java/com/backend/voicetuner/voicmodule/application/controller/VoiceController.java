@@ -1,7 +1,7 @@
-package com.backend.voicetuner.voicmodule.application.model.controller;
+package com.backend.voicetuner.voicmodule.application.controller;
 
-import com.backend.voicetuner.voicmodule.application.model.config.WebClientUtil;
-import com.backend.voicetuner.voicmodule.application.model.dto.AudioDTO;
+import com.backend.voicetuner.voicmodule.application.config.WebClientUtil;
+import com.backend.voicetuner.voicmodule.application.dto.AudioDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -178,6 +178,8 @@ public class VoiceController {
 
         MultipartBodyBuilder builder = new MultipartBodyBuilder();
         builder.part("audio_file", file.getResource());
+
+
 
         return webClient.method(HttpMethod.POST)
                 .uri("https://crappie-emerging-logically.ngrok-free.app/vocal/upload-wav")

@@ -1,7 +1,8 @@
-package com.backend.voicetuner.voicmodule.domain.service;
+package com.backend.voicetuner.voicmodule.domain.solution.service;
 
-import com.backend.voicetuner.voicmodule.domain.model.Solution;
-import com.backend.voicetuner.voicmodule.domain.repository.SolutionRepository;
+import com.backend.voicetuner.voicmodule.application.dto.SolutionDTO;
+import com.backend.voicetuner.voicmodule.domain.solution.model.Solution;
+import com.backend.voicetuner.voicmodule.domain.solution.repository.SolutionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,12 +18,15 @@ public class SolutionService {
     }
 
     @Transactional
-    public Solution recordSolution(Solution solution) {
+    public Solution recordSolution(Long userId, Long songId, SolutionDTO solutionDTO) {
 
-        if (solution != null) {
-            return solutionRepository.save(solution);
-        }
-        return null;
+        Solution solutionEntity = new Solution(userId, songId,
+                solutionDTO.getBeatScore(),
+                solutionDTO.getPitchScore(),
+                solutionDTO.getVocalRange(),
+                solutionDTO.getTotalScore());
+
+        return solutionRepository.save(solutionEntity);
     }
 
     @Transactional

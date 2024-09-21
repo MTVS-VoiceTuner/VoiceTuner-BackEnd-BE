@@ -1,6 +1,6 @@
-package com.backend.voicetuner.voicmodule.application.model.controller;
+package com.backend.voicetuner.voicmodule.application.controller;
 
-import com.backend.voicetuner.voicmodule.application.model.dto.AudioDTO;
+import com.backend.voicetuner.voicmodule.application.dto.AudioDTO;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
