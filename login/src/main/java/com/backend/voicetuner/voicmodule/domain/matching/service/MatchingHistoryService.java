@@ -1,6 +1,6 @@
 package com.backend.voicetuner.voicmodule.domain.matching.service;
 
-import com.backend.voicetuner.voicmodule.application.dto.HistoryDTO;
+import com.backend.voicetuner.voicmodule.application.dto.MatchingDTO;
 import com.backend.voicetuner.voicmodule.domain.matching.model.History;
 import com.backend.voicetuner.voicmodule.domain.matching.repository.MatchingRepository;
 import org.springframework.boot.actuate.endpoint.jackson.EndpointObjectMapper;
@@ -12,33 +12,34 @@ import java.util.List;
 @Service
 public class MatchingHistoryService {
 
-    private final EndpointObjectMapper endpointObjectMapper;
     private MatchingRepository matchingRepository;
 
-    public MatchingHistoryService(MatchingRepository matchingRepository, EndpointObjectMapper endpointObjectMapper) {
+    public MatchingHistoryService(MatchingRepository matchingRepository) {
         this.matchingRepository = matchingRepository;
-        this.endpointObjectMapper = endpointObjectMapper;
     }
 
-    public History registMatching(HistoryDTO historyDTO) {
+    public MatchingDTO registMatching(MatchingDTO matchingDTO) {
 
-        if (historyDTO == null)
+        if (matchingDTO == null)
             return null;
 
         History matchingEntity = new History(
-                historyDTO.getPlayer1(),
-                historyDTO.getPlayer2(),
-                historyDTO.getPlayer3(),
-                historyDTO.getPlayer4());
-        return matchingRepository.save(matchingEntity);
+                matchingDTO.getPlayer1(),
+                matchingDTO.getPlayer2(),
+                matchingDTO.getPlayer3(),
+                matchingDTO.getPlayer4()
+        );
+        matchingRepository.save(matchingEntity);
+
+        return matchingDTO;
     }
 
-    public List<HistoryDTO> getAllMatchingHistory() {
-        List<HistoryDTO> result = new ArrayList<>();
+    public List<MatchingDTO> getAllMatchingHistory() {
+        List<MatchingDTO> result = new ArrayList<>();
         List<History> finds = matchingRepository.findAll();
 
         for (History history : finds) {
-            result.add( new HistoryDTO(
+            result.add( new MatchingDTO(
                     history.getPlayer1(),
                     history.getPlayer2(),
                     history.getPlayer3(),
@@ -48,17 +49,17 @@ public class MatchingHistoryService {
         return result;
     }
 
-    public List<HistoryDTO> findUserMatchingHistory(String email) {
-        List<HistoryDTO> result = new ArrayList<>();
+    public List<MatchingDTO> findUserMatchingHistory(Long userId) {
+        List<MatchingDTO> result = new ArrayList<>();
         List<History> finds = matchingRepository.findAllByPlayer1OrPlayer2OrPlayer3OrPlayer4(
-                email,
-                email,
-                email,
-                email
+                userId,
+                userId,
+                userId,
+                userId
             );
 
         for (History history : finds) {
-            result.add( new HistoryDTO(
+            result.add( new MatchingDTO(
                     history.getPlayer1(),
                     history.getPlayer2(),
                     history.getPlayer3(),

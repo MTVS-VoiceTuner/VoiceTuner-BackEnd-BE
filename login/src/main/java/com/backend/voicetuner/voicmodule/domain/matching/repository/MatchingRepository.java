@@ -9,8 +9,9 @@ import java.util.List;
 @Repository
 public interface MatchingRepository extends JpaRepository<History, Long> {
     List<History> findAllByPlayer1OrPlayer2OrPlayer3OrPlayer4(
-            String player1,
-            String player2,
-            String player3,
-            String player4);
+            Long player1,
+            Long player2,
+            Long player3,
+            Long player4
+    );
 }
