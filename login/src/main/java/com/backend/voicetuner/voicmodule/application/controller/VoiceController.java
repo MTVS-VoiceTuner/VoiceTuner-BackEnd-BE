@@ -20,6 +20,7 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
+import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.http.client.HttpClientRequest;
 
@@ -182,20 +183,35 @@ public class VoiceController {
         builder.part("audio_file", file.getResource());
 
 
-        return webClient.method(HttpMethod.POST)
-                .uri("https://crappie-emerging-logically.ngrok-free.app/vocal/upload-wav-feedback")
-                .contentType(MediaType.MULTIPART_FORM_DATA)
-                .body(BodyInserters.fromMultipartData(builder.build()))
-                .httpRequest(request -> {
+        try {
+            return webClient.method(HttpMethod.POST)
+                    .uri("https://crappie-emerging-logically.ngrok-free.app/vocal/upload-wav-feedback")
+                    .contentType(MediaType.MULTIPART_FORM_DATA)
+                    .body(BodyInserters.fromMultipartData(builder.build()))
+                    .httpRequest(request -> {
+                        HttpClientRequest reactorRequest = request.getNativeRequest();
+                        reactorRequest.responseTimeout(Duration.ofDays(3));  // 타임아웃 3일 설정
+                    })
+                    .retrieve()
+                    .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(), clientResponse -> {
+                        // 응답이 4xx 또는 5xx 에러일 경우, 에러 로그 출력
+                        return clientResponse.bodyToMono(String.class)
+                                .flatMap(errorBody -> {
+                                    log.error("Error Status: {}", clientResponse.statusCode());
+                                    log.error("Error Body: {}", errorBody);
+                                    return Mono.error(new RuntimeException("Failed to upload audio: " + errorBody));
+                                });
+                    })
+                    .bodyToMono(String.class)
+                    .block();
 
-                    HttpClientRequest reactorRequest = request.getNativeRequest();
-                    reactorRequest.responseTimeout(Duration.ofDays(3));
-                })
-
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
-
+        } catch (WebClientResponseException e) {
+            log.error("WebClientResponseException: {}", e.getResponseBodyAsString());
+            return "WebClient Error: " + e.getResponseBodyAsString();
+        } catch (Exception e) {
+            log.error("Exception: {}", e.getMessage());
+            return "Error: " + e.getMessage();
+        }
     }
 
     // 원본 파일 전송
