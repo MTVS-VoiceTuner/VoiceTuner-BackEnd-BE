@@ -45,11 +45,18 @@ public class SolutionController {
             @RequestParam Long userId,
             @RequestParam Long songId,
             @RequestBody SolutionDTO solutionDTO) {
-        SolutionDTO result = solutionService.updateSolution(userId, songId, solutionDTO);
+        SolutionDTO result = solutionService.updateSolution(solutionDTO);
 
         if (result == null) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().body(result);
+    }
+
+    @DeleteMapping("/delet-solution")
+    public ResponseEntity<?> deleteSolution(
+            @RequestParam Long userId,
+            @RequestParam Long songId) {
+        return ResponseEntity.ok().body("삭제 성공");
     }
 }

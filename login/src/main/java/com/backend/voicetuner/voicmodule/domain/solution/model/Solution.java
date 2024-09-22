@@ -10,33 +10,49 @@ public class Solution {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long solutionId;
 
-    @Column(name="USER_ID")
+    @Column(name="USER_ID", nullable = false)
     public Long userId;
 
-    @Column(name="SONG_ID")
+    @Column(name="SONG_ID", nullable = false)
     public Long songId;
 
-    @Column(name="BEAT_SCORE")
-    public int beatScore;
+    @Column(name="TRACK_ID")
+    public Long trackId;
+
+    @Column(name="AI_ANSWER")
+    public String aiAnswer;
+
+    @Column(name="TEMPO_SCORE")
+    public float tempoScore;
 
     @Column(name="PITCH_SCORE")
-    public int pitchScore;
+    public float pitchScore;
 
-    @Column(name="VOCAL_RANGE")
-    public String vocalRange;
+    @Column(name="USER_VOCAL_RANGE")
+    public String userVocalRange;
 
-    @Column(name="TOTAL_SCORE")
-    public int totalScore;
+    @Column(name="FINAL_SCORE")
+    public float finalScore;
 
     public Solution() {}
 
-    public Solution(Long userId, Long songId, int beatScore, int pitchScore, String vocalRange, int totalScore) {
+    public Solution(
+            Long userId,
+            Long songId,
+            Long trackId,
+            String aiAnswer,
+            float tempoScore,
+            float pitchScore,
+            String userVocalRange,
+            float finalScore) {
         this.userId = userId;
         this.songId = songId;
-        this.beatScore = beatScore;
+        this.trackId = trackId;
+        this.aiAnswer = aiAnswer;
+        this.tempoScore = tempoScore;
         this.pitchScore = pitchScore;
-        this.vocalRange = vocalRange;
-        this.totalScore = totalScore;
+        this.userVocalRange = userVocalRange;
+        this.finalScore = finalScore;
     }
 
     public Long getSolutionId() {
@@ -51,20 +67,28 @@ public class Solution {
         return songId;
     }
 
-    public int getBeatScore() {
-        return beatScore;
+    public Long getTrackId() {
+        return trackId;
     }
 
-    public int getPitchScore() {
+    public String getAiAnswer() {
+        return aiAnswer;
+    }
+
+    public float getTempoScore() {
+        return tempoScore;
+    }
+
+    public float getPitchScore() {
         return pitchScore;
     }
 
-    public String getVocalRange() {
-        return vocalRange;
+    public String getUserVocalRange() {
+        return userVocalRange;
     }
 
-    public int getTotalScore() {
-        return totalScore;
+    public float getFinalScore() {
+        return finalScore;
     }
 
     public void setUserId(Long userId) {
@@ -75,20 +99,28 @@ public class Solution {
         this.songId = songId;
     }
 
-    public void setBeatScore(int beatScore) {
-        this.beatScore = beatScore;
+    public void setTrackId(Long trackId) {
+        this.trackId = trackId;
     }
 
-    public void setPitchScore(int pitchScore) {
+    public void setAiAnswer(String aiAnswer) {
+        this.aiAnswer = aiAnswer;
+    }
+
+    public void setTempoScore(float tempoScore) {
+        this.tempoScore = tempoScore;
+    }
+
+    public void setPitchScore(float pitchScore) {
         this.pitchScore = pitchScore;
     }
 
-    public void setVocalRange(String vocalRange) {
-        this.vocalRange = vocalRange;
+    public void setUserVocalRange(String userVocalRange) {
+        this.userVocalRange = userVocalRange;
     }
 
-    public void setTotalScore(int totalScore) {
-        this.totalScore = totalScore;
+    public void setFinalScore(float finalScore) {
+        this.finalScore = finalScore;
     }
 
     @Override
@@ -97,10 +129,12 @@ public class Solution {
                 "solutionId=" + solutionId +
                 ", userId=" + userId +
                 ", songId=" + songId +
-                ", beatScore=" + beatScore +
+                ", trackId=" + trackId +
+                ", aiAnswer='" + aiAnswer + '\'' +
+                ", tempoScore=" + tempoScore +
                 ", pitchScore=" + pitchScore +
-                ", vocalRange='" + vocalRange + '\'' +
-                ", totalScore=" + totalScore +
+                ", userVocalRange='" + userVocalRange + '\'' +
+                ", finalScore=" + finalScore +
                 '}';
     }
 }

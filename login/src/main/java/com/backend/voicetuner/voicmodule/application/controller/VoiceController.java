@@ -2,8 +2,14 @@ package com.backend.voicetuner.voicmodule.application.controller;
 
 import com.backend.voicetuner.voicmodule.application.config.WebClientUtil;
 import com.backend.voicetuner.voicmodule.application.dto.AudioDTO;
+import com.backend.voicetuner.voicmodule.application.dto.SolutionDTO;
+import com.backend.voicetuner.voicmodule.domain.solution.service.SolutionService;
+import com.nimbusds.jose.shaded.gson.JsonObject;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +44,8 @@ public class VoiceController {
     private MultipartFile file;
 
     private static final Logger log = LoggerFactory.getLogger(VoiceController.class);
+    @Autowired
+    private SolutionService solutionService;
 
     @Autowired
     private WebClientUtil webClientUtil;
@@ -141,7 +149,7 @@ public class VoiceController {
             @RequestHeader("content-type") String contentType,
             @RequestHeader("content-length") String contentLength,
             @RequestPart("audio_file") MultipartFile file
-    ) throws IOException {
+    ) throws IOException, ParseException {
 
         System.out.printf("contentType:%s%n", contentType);
         System.out.printf("contentLength:%s%n", contentLength);
@@ -151,6 +159,20 @@ public class VoiceController {
 
         //
         // /upload-wav-feedback // 피드백 전송 uri
+//        return webClient.method(HttpMethod.POST)
+//                .uri("https://crappie-emerging-logically.ngrok-free.app/vocal/upload-wav-feedback")
+//                .contentType(MediaType.MULTIPART_FORM_DATA)
+//                .body(BodyInserters.fromMultipartData(builder.build()))
+//                .httpRequest(request -> {
+//
+//                    HttpClientRequest reactorRequest = request.getNativeRequest();
+//                    reactorRequest.responseTimeout(Duration.ofDays(3));
+//                })
+//
+//                .retrieve()
+//                .bodyToMono(String.class)
+//                .block();
+
         return webClient.method(HttpMethod.POST)
                 .uri("https://crappie-emerging-logically.ngrok-free.app/vocal/upload-wav-feedback")
                 .contentType(MediaType.MULTIPART_FORM_DATA)
@@ -164,7 +186,55 @@ public class VoiceController {
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
+    }
 
+    // wav 파일로 한 소절 보내기
+    @Operation(summary = "wav 한 소절 전송", description = "이거 테스트 해야함")
+    @PostMapping(value = "/sendSaveSolution", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public SolutionDTO saveSolution(
+            @RequestHeader("content-type") String contentType,
+            @RequestHeader("content-length") String contentLength,
+            @RequestPart("audio_file") MultipartFile file
+    ) throws IOException, ParseException {
+
+        System.out.printf("contentType:%s%n", contentType);
+        System.out.printf("contentLength:%s%n", contentLength);
+
+        MultipartBodyBuilder builder = new MultipartBodyBuilder();
+        builder.part("audio_file", file.getResource());
+
+        //
+        // /upload-wav-feedback // 피드백 전송 uri
+//        return webClient.method(HttpMethod.POST)
+//                .uri("https://crappie-emerging-logically.ngrok-free.app/vocal/upload-wav-feedback")
+//                .contentType(MediaType.MULTIPART_FORM_DATA)
+//                .body(BodyInserters.fromMultipartData(builder.build()))
+//                .httpRequest(request -> {
+//
+//                    HttpClientRequest reactorRequest = request.getNativeRequest();
+//                    reactorRequest.responseTimeout(Duration.ofDays(3));
+//                })
+//
+//                .retrieve()
+//                .bodyToMono(String.class)
+//                .block();
+
+        SolutionDTO result = webClient.method(HttpMethod.POST)
+                .uri("https://crappie-emerging-logically.ngrok-free.app/vocal/upload-wav-feedback")
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .body(BodyInserters.fromMultipartData(builder.build()))
+                .httpRequest(request -> {
+
+                    HttpClientRequest reactorRequest = request.getNativeRequest();
+                    reactorRequest.responseTimeout(Duration.ofDays(3));
+                })
+
+                .retrieve()
+                .bodyToMono(SolutionDTO.class)
+                .block();
+        solutionService.updateSolution(result);
+
+        return result;
     }
 
 
