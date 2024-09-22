@@ -22,6 +22,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import java.io.IOException;
@@ -43,7 +46,9 @@ public class SecurityConfig {
             "/v3/api-docs/**",       // Swagger 문서
             "/swagger-ui/**",        // Swagger UI
             "/swagger-ui.html",     // Swagger UI HTML
-            "/api/tarot/**"
+            "/api/tarot/**",
+            "/api/sendOriginVerse",
+            "/api/sendOriginSong"
     };
 
     @Bean
@@ -65,6 +70,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity, MvcRequestMatcher.Builder mvc) throws Exception {
 
         httpSecurity
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))  // CORS 설정 추가
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement((sessionManagement) ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -83,6 +89,21 @@ public class SecurityConfig {
         // Spring Security Custom Filter 적용 - Form '인증'에 대해서 적용
 
         return httpSecurity.build();
+    }
+
+    // CORS 설정 메서드 추가
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOriginPattern("*"); // 모든 도메인 허용
+        configuration.addAllowedMethod("*");        // 모든 HTTP 메서드 허용 (GET, POST 등)
+        configuration.addAllowedHeader("*");        // 모든 헤더 허용
+        configuration.setAllowCredentials(true);    // 쿠키 허용
+        configuration.addExposedHeader("Authorization"); // 클라이언트에서 사용할 수 있는 헤더 추가
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     private MvcRequestMatcher[] createMvcRequestMatcherForWhiteList(MvcRequestMatcher.Builder mvc) {

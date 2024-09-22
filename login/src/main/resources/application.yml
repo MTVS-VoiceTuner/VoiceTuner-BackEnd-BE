@@ -6,11 +6,18 @@ server:
   port: 8080
 
 spring:
+  config:
+    import: optional:file:.env[.properties]
   datasource:
     url: jdbc:mysql://localhost:3306/voicetuner
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ohgiraffers
     password: ohgiraffers
+  servlet:
+    multipart:
+      enabled: true
+      maxFileSize: 128MB
+      maxRequestSize: 128MB
   jpa:
     hibernate:
       ddl-auto: update
@@ -25,8 +32,8 @@ spring:
       client:
         registration:
           kakao:
-            clientId: 407d05ce2e2978cf9622c3690de2fe11 # Token
-            client-secret: GmwYUmfLps6I8MLhj3iBEiKYwCOqi7AN # Client Secret
+            clientId: ${CLIENT_REST_API_KEY} # Token
+            client-secret: ${CLIENT_SECRET_KEY} # Client Secret
             redirect_uri: http://192.168.0.57:8080/api/auth/kakao/login # https://developers.kakao.com/console/app/1127496/product/login
             authorization-grant-type: authorization_code
             scope: [ profile, account_email ]
@@ -38,7 +45,7 @@ spring:
             user-name-attribute: id
 
 jwt:
-  secret: 7ZmA656AIOuTneygkOyZlSDquLDsm5AgMeydvOywqALdlsKJL3234jklsdjfaKJDLnflkasdf
+  secret: ${JWT_SECRET_KEY}
 
 logging:
   level:
