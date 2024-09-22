@@ -19,6 +19,7 @@ public class SolutionController {
         this.solutionService = solutionService;
     }
 
+    // 전체 검색
     @GetMapping("find-all")
     public ResponseEntity<?> findSolutionById(@RequestParam Long userId) {
         List<SolutionDTO> response = solutionService.findSolutionsByUserId(userId);
@@ -53,7 +54,7 @@ public class SolutionController {
         return ResponseEntity.ok().body(result);
     }
 
-    @DeleteMapping("/delet-solution")
+    @DeleteMapping("/delete-solution")
     public ResponseEntity<?> deleteSolution(
             @RequestParam Long userId,
             @RequestParam Long songId) {
