@@ -70,7 +70,170 @@ public class VoiceController {
     // @PostMapping 어노테이션은 HTTP POST 요청을 해당 경로로 매핑합니다.
 
     // WebClient 설정: 응답 사이즈 제한 늘리기 및 타임아웃 설정
-    // 인코딩 방식
+
+    /**
+     * wav 파일로 한 소절 보내기(저장 X) - sendOriginVerse
+     */
+
+    @Operation(summary = "wav 한 소절 전송", description = "이거 테스트 해야함")
+    @PostMapping(value = "/sendOriginVerse", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String testVerse(
+            @RequestHeader("content-type") String contentType,
+            @RequestHeader("content-length") String contentLength,
+            @RequestPart("audio_file") MultipartFile file
+    ) throws IOException, ParseException {
+
+        System.out.printf("contentType:%s%n", contentType);
+        System.out.printf("contentLength:%s%n", contentLength);
+
+        MultipartBodyBuilder builder = new MultipartBodyBuilder();
+        builder.part("audio_file", file.getResource());
+
+
+/*         /upload-wav-feedback // 피드백 전송 uri
+        return webClient.method(HttpMethod.POST)
+                .uri("https://crappie-emerging-logically.ngrok-free.app/vocal/upload-wav-feedback")
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .body(BodyInserters.fromMultipartData(builder.build()))
+                .httpRequest(request -> {
+
+                    HttpClientRequest reactorRequest = request.getNativeRequest();
+                    reactorRequest.responseTimeout(Duration.ofDays(3));
+                })
+
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();*/
+
+        return webClient.method(HttpMethod.POST)
+                .uri("https://crappie-emerging-logically.ngrok-free.app/vocal/upload-wav-feedback")
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .body(BodyInserters.fromMultipartData(builder.build()))
+                .httpRequest(request -> {
+
+                    HttpClientRequest reactorRequest = request.getNativeRequest();
+                    reactorRequest.responseTimeout(Duration.ofDays(3));
+                })
+
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+    }
+
+    /**
+     * wav 파일로 전체 곡 전송(저장 o) - sendSaveSolution
+     */
+    
+    @Operation(summary = "wav 한 소절 전송", description = "이거 테스트 해야함")
+    @PostMapping(value = "/sendSaveSolution", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public SolutionDTO saveSolution(
+            @RequestHeader("content-type") String contentType,
+            @RequestHeader("content-length") String contentLength,
+            @RequestPart("audio_file") MultipartFile file
+    ) throws IOException, ParseException {
+
+        // 확인용 로그
+        System.out.printf("contentType:%s%n", contentType);
+        System.out.printf("contentLength:%s%n", contentLength);
+
+        MultipartBodyBuilder builder = new MultipartBodyBuilder();
+        builder.part("audio_file", file.getResource());
+
+/*         /upload-wav-feedback // 피드백 전송 uri
+        return webClient.method(HttpMethod.POST)
+                .uri("https://crappie-emerging-logically.ngrok-free.app/vocal/upload-wav-feedback")
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .body(BodyInserters.fromMultipartData(builder.build()))
+                .httpRequest(request -> {
+
+                    HttpClientRequest reactorRequest = request.getNativeRequest();
+                    reactorRequest.responseTimeout(Duration.ofDays(3));
+                })
+
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();*/
+
+        SolutionDTO result = webClient.method(HttpMethod.POST)
+                .uri("https://crappie-emerging-logically.ngrok-free.app/vocal/upload-wav-feedback")
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .body(BodyInserters.fromMultipartData(builder.build()))
+                .httpRequest(request -> {
+
+                    HttpClientRequest reactorRequest = request.getNativeRequest();
+                    reactorRequest.responseTimeout(Duration.ofDays(3));
+                })
+
+                .retrieve()
+                .bodyToMono(SolutionDTO.class)
+                .block();
+
+        // 확인용
+        System.out.println(result);
+        
+        // 결과 저장
+        solutionService.updateSolution(result);
+
+
+
+        return result;
+    }
+
+
+    /**
+     * wav 한 소절 곡 전송 - /sendOriginSong
+     * 
+     * => "/sendSaveSolution"로 교체
+     */
+
+    // @RequestHeader("content-type") String contentType,
+    // @RequestHeader("content-length") String contentLength
+    @Operation(summary = "wav 한 소절 곡 전송", description = "이거 테스트 해야함")
+    @PostMapping(value = "/sendOriginSong", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String testSong(
+            @RequestHeader("content-type") String contentType,
+            @RequestHeader("content-length") String contentLength,
+            @RequestPart("audio_file") MultipartFile file
+    ) throws IOException {
+
+        MultipartBodyBuilder builder = new MultipartBodyBuilder();
+        builder.part("audio_file", file.getResource());
+
+
+        try {
+            return webClient.method(HttpMethod.POST)
+                    .uri("https://crappie-emerging-logically.ngrok-free.app/vocal/upload-wav-feedback")
+                    .contentType(MediaType.MULTIPART_FORM_DATA)
+                    .body(BodyInserters.fromMultipartData(builder.build()))
+                    .httpRequest(request -> {
+                        HttpClientRequest reactorRequest = request.getNativeRequest();
+                        reactorRequest.responseTimeout(Duration.ofDays(3));  // 타임아웃 3일 설정
+                    })
+                    .retrieve()
+                    .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(), clientResponse -> {
+                        // 응답이 4xx 또는 5xx 에러일 경우, 에러 로그 출력
+                        return clientResponse.bodyToMono(String.class)
+                                .flatMap(errorBody -> {
+                                    log.error("Error Status: {}", clientResponse.statusCode());
+                                    log.error("Error Body: {}", errorBody);
+                                    return Mono.error(new RuntimeException("Failed to upload audio: " + errorBody));
+                                });
+                    })
+                    .bodyToMono(String.class)
+                    .block();
+
+        } catch (WebClientResponseException e) {
+            log.error("WebClientResponseException: {}", e.getResponseBodyAsString());
+            return "WebClient Error: " + e.getResponseBodyAsString();
+        } catch (Exception e) {
+            log.error("Exception: {}", e.getMessage());
+            return "Error: " + e.getMessage();
+        }
+    }
+
+/**
+ 인코딩 방식
+ */
 /*
 
     // 인코딩 후 한 소절 전송
@@ -141,183 +304,5 @@ public class VoiceController {
         }
     }
 */
-
-    // wav 파일로 한 소절 보내기
-    @Operation(summary = "wav 한 소절 전송", description = "이거 테스트 해야함")
-    @PostMapping(value = "/sendOriginVerse", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String testVerse(
-            @RequestHeader("content-type") String contentType,
-            @RequestHeader("content-length") String contentLength,
-            @RequestPart("audio_file") MultipartFile file
-    ) throws IOException, ParseException {
-
-        System.out.printf("contentType:%s%n", contentType);
-        System.out.printf("contentLength:%s%n", contentLength);
-
-        MultipartBodyBuilder builder = new MultipartBodyBuilder();
-        builder.part("audio_file", file.getResource());
-
-        //
-        // /upload-wav-feedback // 피드백 전송 uri
-//        return webClient.method(HttpMethod.POST)
-//                .uri("https://crappie-emerging-logically.ngrok-free.app/vocal/upload-wav-feedback")
-//                .contentType(MediaType.MULTIPART_FORM_DATA)
-//                .body(BodyInserters.fromMultipartData(builder.build()))
-//                .httpRequest(request -> {
-//
-//                    HttpClientRequest reactorRequest = request.getNativeRequest();
-//                    reactorRequest.responseTimeout(Duration.ofDays(3));
-//                })
-//
-//                .retrieve()
-//                .bodyToMono(String.class)
-//                .block();
-
-        return webClient.method(HttpMethod.POST)
-                .uri("https://crappie-emerging-logically.ngrok-free.app/vocal/upload-wav-feedback")
-                .contentType(MediaType.MULTIPART_FORM_DATA)
-                .body(BodyInserters.fromMultipartData(builder.build()))
-                .httpRequest(request -> {
-
-                    HttpClientRequest reactorRequest = request.getNativeRequest();
-                    reactorRequest.responseTimeout(Duration.ofDays(3));
-                })
-
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
-    }
-
-    // wav 파일로 한 소절 보내기
-    @Operation(summary = "wav 한 소절 전송", description = "이거 테스트 해야함")
-    @PostMapping(value = "/sendSaveSolution", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public SolutionDTO saveSolution(
-            @RequestHeader("content-type") String contentType,
-            @RequestHeader("content-length") String contentLength,
-            @RequestPart("audio_file") MultipartFile file
-    ) throws IOException, ParseException {
-
-        System.out.printf("contentType:%s%n", contentType);
-        System.out.printf("contentLength:%s%n", contentLength);
-
-        MultipartBodyBuilder builder = new MultipartBodyBuilder();
-        builder.part("audio_file", file.getResource());
-
-        //
-        // /upload-wav-feedback // 피드백 전송 uri
-//        return webClient.method(HttpMethod.POST)
-//                .uri("https://crappie-emerging-logically.ngrok-free.app/vocal/upload-wav-feedback")
-//                .contentType(MediaType.MULTIPART_FORM_DATA)
-//                .body(BodyInserters.fromMultipartData(builder.build()))
-//                .httpRequest(request -> {
-//
-//                    HttpClientRequest reactorRequest = request.getNativeRequest();
-//                    reactorRequest.responseTimeout(Duration.ofDays(3));
-//                })
-//
-//                .retrieve()
-//                .bodyToMono(String.class)
-//                .block();
-
-        SolutionDTO result = webClient.method(HttpMethod.POST)
-                .uri("https://crappie-emerging-logically.ngrok-free.app/vocal/upload-wav-feedback")
-                .contentType(MediaType.MULTIPART_FORM_DATA)
-                .body(BodyInserters.fromMultipartData(builder.build()))
-                .httpRequest(request -> {
-
-                    HttpClientRequest reactorRequest = request.getNativeRequest();
-                    reactorRequest.responseTimeout(Duration.ofDays(3));
-                })
-
-                .retrieve()
-                .bodyToMono(SolutionDTO.class)
-                .block();
-        solutionService.updateSolution(result);
-
-        return result;
-    }
-
-
-    // wav 파일로 전체 곡 보내기
-    // @RequestHeader("content-type") String contentType,
-    // @RequestHeader("content-length") String contentLength
-    @Operation(summary = "wav 전체 곡 전송", description = "이거 테스트 해야함")
-    @PostMapping(value = "/sendOriginSong", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String testSong(
-            @RequestHeader("content-type") String contentType,
-            @RequestHeader("content-length") String contentLength,
-            @RequestPart("audio_file") MultipartFile file
-    ) throws IOException {
-
-        MultipartBodyBuilder builder = new MultipartBodyBuilder();
-        builder.part("audio_file", file.getResource());
-
-
-        try {
-            return webClient.method(HttpMethod.POST)
-                    .uri("https://crappie-emerging-logically.ngrok-free.app/vocal/upload-wav-feedback")
-                    .contentType(MediaType.MULTIPART_FORM_DATA)
-                    .body(BodyInserters.fromMultipartData(builder.build()))
-                    .httpRequest(request -> {
-                        HttpClientRequest reactorRequest = request.getNativeRequest();
-                        reactorRequest.responseTimeout(Duration.ofDays(3));  // 타임아웃 3일 설정
-                    })
-                    .retrieve()
-                    .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(), clientResponse -> {
-                        // 응답이 4xx 또는 5xx 에러일 경우, 에러 로그 출력
-                        return clientResponse.bodyToMono(String.class)
-                                .flatMap(errorBody -> {
-                                    log.error("Error Status: {}", clientResponse.statusCode());
-                                    log.error("Error Body: {}", errorBody);
-                                    return Mono.error(new RuntimeException("Failed to upload audio: " + errorBody));
-                                });
-                    })
-                    .bodyToMono(String.class)
-                    .block();
-
-        } catch (WebClientResponseException e) {
-            log.error("WebClientResponseException: {}", e.getResponseBodyAsString());
-            return "WebClient Error: " + e.getResponseBodyAsString();
-        } catch (Exception e) {
-            log.error("Exception: {}", e.getMessage());
-            return "Error: " + e.getMessage();
-        }
-    }
-
-    // 원본 파일 전송
-    /*
-    @PostMapping("/sendOriginSong")
-    public String testPost(
-            // @RequestPart 어노테이션은 요청의 일부인 멀티파트 파일을 매개변수로 받습니다.
-            @RequestPart() MultipartFile file,
-            // @RequestHeader 어노테이션은 요청 헤더의 값을 매개변수로 받습니다.
-            @RequestHeader("content-type") String contentType,
-            // @RequestHeader 어노테이션은 요청 헤더의 값을 매개변수로 받습니다.
-            @RequestHeader("content-length") String contentLength) throws IOException {
-
-        // 로그 정보를 기록합니다. 파일의 컨텐트 타입과 길이를 로그로 출력합니다.
-        log.info("contentType:{}", contentType);
-        log.info("contentLength:{}", contentLength);
-
-        // MultipartBodyBuilder를 사용하여 멀티파트 요청의 본문을 구성합니다.
-        MultipartBodyBuilder builder = new MultipartBodyBuilder();
-        // 파일 데이터를 'audio_file' 파트로 추가합니다.
-        builder.part("audio_file", file.getResource());
-
-        // WebClient를 사용하여 POST 요청을 외부 서버로 보냅니다.
-        return webClient.method(HttpMethod.POST) // HTTP 메소드를 POST로 설정합니다.
-                .uri("https://crappie-emerging-logically.ngrok-free.app/vocal/upload-audio") // 요청할 URI를 설정합니다.
-                .contentType(MediaType.MULTIPART_FORM_DATA) // 컨텐트 타입을 멀티파트 폼 데이터로 설정합니다.
-                .body(BodyInserters.fromMultipartData(builder.build())) // 멀티파트 데이터 본문을 설정합니다.
-                .httpRequest(request -> {
-                    // 요청 객체를 가져와 추가 설정을 합니다. 여기서는 응답 타임아웃을 설정합니다.
-                    HttpClientRequest reactorRequest = request.getNativeRequest();
-                    reactorRequest.responseTimeout(Duration.ofDays(3)); // 응답 타임아웃을 3일로 설정합니다.
-                })
-                .retrieve() // 응답을 검색합니다.
-                .bodyToMono(String.class) // 응답 본문을 String 타입으로 변환합니다.
-                .block(); // 비동기 작업이 완료될 때까지 현재 스레드를 차단합니다.
-    }
-    */
 
 }

@@ -19,7 +19,7 @@ public class Solution {
     @Column(name="TRACK_ID")
     public Long trackId;
 
-    @Column(name="AI_ANSWER")
+    @Column(name="AI_ANSWER", columnDefinition = "TEXT")
     public String aiAnswer;
 
     @Column(name="TEMPO_SCORE")
