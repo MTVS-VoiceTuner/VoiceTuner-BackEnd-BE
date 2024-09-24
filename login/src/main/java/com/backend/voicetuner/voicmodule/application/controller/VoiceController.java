@@ -154,6 +154,7 @@ public class VoiceController {
                 .bodyToMono(String.class)
                 .block();*/
 
+        // 결과지 SolutionDTO에 저장
         SolutionDTO result = webClient.method(HttpMethod.POST)
                 .uri("https://crappie-emerging-logically.ngrok-free.app/vocal/upload-wav-feedback")
                 .contentType(MediaType.MULTIPART_FORM_DATA)
@@ -163,7 +164,6 @@ public class VoiceController {
                     HttpClientRequest reactorRequest = request.getNativeRequest();
                     reactorRequest.responseTimeout(Duration.ofDays(3));
                 })
-
                 .retrieve()
                 .bodyToMono(SolutionDTO.class)
                 .block();
@@ -171,10 +171,9 @@ public class VoiceController {
         // 확인용
         System.out.println(result);
         
-        // 결과 저장
-        solutionService.updateSolution(result);
+        // 결과 저장 - update -> record
 
-
+        solutionService.recordSolution(result);
 
         return result;
     }
@@ -182,7 +181,6 @@ public class VoiceController {
 
     /**
      * wav 한 소절 곡 전송 - /sendOriginSong
-     * 
      * => "/sendSaveSolution"로 교체
      */
 

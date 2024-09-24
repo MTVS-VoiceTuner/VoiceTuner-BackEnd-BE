@@ -50,7 +50,8 @@ public class SecurityConfig {
             "/api/sendOriginVerse",
             "/api/sendOriginSong",
             "/api/sendSaveSolution",
-            "/solution/find-all"
+            "/solution/find-all",
+            "/solution/result"
 
     };
 

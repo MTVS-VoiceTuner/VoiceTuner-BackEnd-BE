@@ -19,8 +19,25 @@ public class SolutionController {
         this.solutionService = solutionService;
     }
 
-    // 전체 검색
-    @GetMapping("find-all")
+
+    // 토큰으로 userId를 찾은 후 전체 검색
+    @GetMapping("/result")
+    public ResponseEntity<?> findSolutionByToken(@RequestHeader("Authorization") String token) {
+        // "Bearer " 문자열 제거 후 실제 토큰 값만 추출
+        String accessToken = token.startsWith("Bearer ") ? token.substring(7) : token;
+
+        List<SolutionDTO> response = solutionService.findSolutionByAccessToken(accessToken);
+
+        if (response.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok().body(response);
+    }
+
+
+    // userId로 전체 검색
+    @GetMapping("/find-all")
     public ResponseEntity<?> findSolutionById(@RequestParam Long userId) {
         List<SolutionDTO> response = solutionService.findSolutionsByUserId(userId);
 
@@ -30,7 +47,7 @@ public class SolutionController {
         return ResponseEntity.ok().body(response);
     }
 
-    @GetMapping("find-song")
+    @GetMapping("/find-song")
     public ResponseEntity<SolutionDTO> findSolutionBySongId(
             @RequestParam Long userId,
             @RequestParam Long songId) {
@@ -41,7 +58,7 @@ public class SolutionController {
         return ResponseEntity.ok().body(result);
     }
 
-    @PutMapping("record-solution")
+    @PutMapping("/record-solution")
     public ResponseEntity<?> recordSolution(
             @RequestParam Long userId,
             @RequestParam Long songId,

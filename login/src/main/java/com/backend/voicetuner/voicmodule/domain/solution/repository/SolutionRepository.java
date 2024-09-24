@@ -8,6 +8,8 @@ import java.util.List;
 
 @Repository
 public interface SolutionRepository extends JpaRepository<Solution, Long> {
+
     Solution findByUserIdAndSongId(Long userId, Long songId);
+
     List<Solution> findAllByUserId(Long userId);
 }

@@ -44,7 +44,10 @@ public class MemberController {
       */
     @Operation(summary = "로그인", description = "회원 로그인을 처리하고 인증 토큰을 발급합니다.")
     @PostMapping("/login")
-    public ResponseEntity<?> login(HttpServletRequest httpServletRequest, @Valid @RequestBody MemberRequestDTO.loginDTO requestDTO) {
+    public ResponseEntity<?> login(HttpServletRequest httpServletRequest,
+                                   // @Valid: requestDTO의 유효성을 검사한다.
+                                   // @RequestBody: 클라이언트에서 전송한 JSON 데이터를 requestDTO로 변환한다.
+                                   @Valid @RequestBody MemberRequestDTO.loginDTO requestDTO) {
 
         MemberResponseDTO.authTokenDTO responseDTO = memberService.login(httpServletRequest, requestDTO);
 

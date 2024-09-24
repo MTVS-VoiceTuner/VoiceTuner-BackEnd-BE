@@ -30,7 +30,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 public class MemberService {
-    
+
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
@@ -38,12 +38,12 @@ public class MemberService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JWTTokenProvider jwtTokenProvider;
 
-    /*
-        기본 회원 가입
+    /**
+     * 기본 회원 가입
      */
+
     @Transactional
     public void signUp(MemberRequestDTO.signUpDTO requestDTO) {
-
 
         // 비밀번호 확인
         checkValidPassword(requestDTO.password(), passwordEncoder.encode(requestDTO.confirmPassword()));
@@ -56,16 +56,16 @@ public class MemberService {
 
     }
 
-    /*
-        기본 로그인
+    /**
+     * 기본 로그인
      */
     public MemberResponseDTO.authTokenDTO login(HttpServletRequest httpServletRequest, MemberRequestDTO.loginDTO requestDTO) {
 
-        // 1. 이메일 확인
+        // 1. 이메일 확인 - 다르면 예외처리
         Member member = findMemberByEmail(requestDTO.email())
                 .orElseThrow(() -> new ApplicationException(ErrorCode.EMPTY_EMAIL_MEMBER));
 
-        // 2. 비밀번호 확인
+        // 2. 비밀번호 확인 - 다르면 예외처리
         checkValidPassword(requestDTO.password(), member.getPassword());
 
         return getAuthTokenDTO(requestDTO.email(), requestDTO.password(), httpServletRequest);
@@ -76,18 +76,21 @@ public class MemberService {
 
         log.info("{} {}", rawPassword, encodedPassword);
 
-        if(!passwordEncoder.matches(rawPassword, encodedPassword)) {
+        if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
             throw new ApplicationException(ErrorCode.INVALID_PASSWORD);
         }
     }
 
+    // 이메일 확인
     protected Optional<Member> findMemberByEmail(String email) {
         log.info("회원 확인 : {}", email);
 
         return memberRepository.findByEmail(email);
     }
 
-    // 회원 생성
+    /**
+     * 회원 생성
+     */
     protected Member newMember(MemberRequestDTO.signUpDTO requestDTO) {
         return Member.builder()
                 .name(requestDTO.name())
@@ -99,7 +102,9 @@ public class MemberService {
                 .build();
     }
 
-    // 토큰 발급
+    /**
+     * 토큰 발급
+     */
     protected MemberResponseDTO.authTokenDTO getAuthTokenDTO(String email, String password, HttpServletRequest httpServletRequest) {
 
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
@@ -126,32 +131,34 @@ public class MemberService {
         return authTokenDTO;
     }
 
-    // 토큰 재발급
+    /**
+     * 토큰 재발급
+     */
     public MemberResponseDTO.authTokenDTO reissueToken(HttpServletRequest httpServletRequest) {
 
         // Request Header 에서 JWT Token 추출
         String token = jwtTokenProvider.resolveToken(httpServletRequest);
 
         // 토큰 유효성 검사
-        if(token == null || !jwtTokenProvider.validateToken(token)) {
+        if (token == null || !jwtTokenProvider.validateToken(token)) {
             throw new ApplicationException(ErrorCode.FAILED_VALIDATE_ACCESS_TOKEN);
         }
 
         // type 확인
-        if(!jwtTokenProvider.isRefreshToken(token)) {
+        if (!jwtTokenProvider.isRefreshToken(token)) {
             throw new ApplicationException(ErrorCode.IS_NOT_REFRESH_TOKEN);
         }
 
         // RefreshToken
         Optional<RefreshToken> refreshToken = refreshTokenRepository.findByRefreshToken(token);
 
-        if(refreshToken.isEmpty()) {
+        if (refreshToken.isEmpty()) {
             throw new ApplicationException(ErrorCode.FAILED_GET_RERFRESH_TOKEN);
         }
 
         // 최초 로그인한 ip와 같은지 확인
         String currentIp = ClientUtils.getClientIp(httpServletRequest);
-        if(!currentIp.equals(refreshToken.get().getIp())) {
+        if (!currentIp.equals(refreshToken.get().getIp())) {
             throw new ApplicationException(ErrorCode.DIFFERENT_IP_ADDRESS);
         }
 
@@ -162,24 +169,24 @@ public class MemberService {
 
         // RefreshToken Update
         refreshTokenRepository.save(RefreshToken.builder()
-                        .ip(currentIp) // IP 주소를 업데이트
-                        .authorities(refreshToken.get().getAuthorities())
-                        .refreshToken(authTokenDTO.refreshToken())
+                .ip(currentIp) // IP 주소를 업데이트
+                .authorities(refreshToken.get().getAuthorities())
+                .refreshToken(authTokenDTO.refreshToken())
                 .build());
 
         return authTokenDTO;
     }
 
-    /*
-        로그아웃
+    /**
+     * 로그아웃
      */
     public void logout(HttpServletRequest httpServletRequest) {
-        
+
         log.info("로그아웃 - Refresh Token 확인");
 
         String token = jwtTokenProvider.resolveToken(httpServletRequest);
 
-        if(token == null || !jwtTokenProvider.validateToken(token)) {
+        if (token == null || !jwtTokenProvider.validateToken(token)) {
             throw new ApplicationException(ErrorCode.FAILED_VALIDATE__REFRESH_TOKEN);
         }
 
@@ -193,4 +200,5 @@ public class MemberService {
         refreshTokenRepository.delete(refreshToken);
         log.info("로그아웃 성공");
     }
+
 }

@@ -1,9 +1,10 @@
 package com.backend.voicetuner.voicmodule.domain.solution.service;
 
+import com.backend.voicetuner.login.refreshToken.repository.RefreshTokenRepository;
 import com.backend.voicetuner.voicmodule.application.dto.SolutionDTO;
 import com.backend.voicetuner.voicmodule.domain.solution.model.Solution;
 import com.backend.voicetuner.voicmodule.domain.solution.repository.SolutionRepository;
-import org.springframework.security.core.parameters.P;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,16 +15,28 @@ import java.util.List;
 public class SolutionService {
 
     private SolutionRepository solutionRepository;
+    private RefreshTokenRepository refreshTokenRepository;
 
+    @Autowired
     public SolutionService(SolutionRepository solutionRepository) {
         this.solutionRepository = solutionRepository;
     }
 
-    @Transactional
-    public Solution recordSolution(SolutionDTO solutionDTO) {
+    @Autowired
+    public void setRefreshTokenRepository(RefreshTokenRepository refreshTokenRepository) {
+        this.refreshTokenRepository = refreshTokenRepository;
+    }
 
+
+    /**
+     * create solution
+     */
+    @Transactional
+    public void recordSolution(SolutionDTO solutionDTO) {
+
+        // solutionDTO가 null이면 에러
         if (solutionDTO == null) {
-            return null;
+            throw new IllegalArgumentException("solutionDTO is null");
         }
 
         Solution solutionEntity = new Solution(
@@ -37,9 +50,12 @@ public class SolutionService {
                 solutionDTO.getFinalScore()
         );
 
-        return solutionRepository.save(solutionEntity);
+        solutionRepository.save(solutionEntity);
     }
 
+    /**
+     * update solution
+     */
     @Transactional
     public SolutionDTO updateSolution(SolutionDTO solutionDTO) {
         if (solutionDTO == null) {
@@ -65,6 +81,9 @@ public class SolutionService {
 
     }
 
+    /**
+     * delete solution
+     */
     @Transactional
     public void deleteSolution(Long userId, Long songId) {
         Solution target = solutionRepository.findByUserIdAndSongId(userId, songId);
@@ -75,7 +94,31 @@ public class SolutionService {
         return solutionRepository.findByUserIdAndSongId(userId, songId);
     }
 
+
+
+    /**
+     * token으로 solution 찾기
+     * token -> userId -> solutionList
+     */
+    public List<SolutionDTO> findSolutionByAccessToken(String token) {
+
+        return findSolutionsByUserId(findUserIdByToken(token));
+
+    }
+
+    /**
+     * token으로 userId 찾기
+     */
+    public Long findUserIdByToken(String token) {
+
+        return refreshTokenRepository.findUserIdByRefreshToken(token);
+    }
+
+    /**
+     * find solution by userId
+     */
     public List<SolutionDTO> findSolutionsByUserId(Long userId) {
+
         List<SolutionDTO> result = new ArrayList<>();
         List<Solution> finds = solutionRepository.findAllByUserId(userId);
 
@@ -96,6 +139,10 @@ public class SolutionService {
         return result;
     }
 
+    /**
+     * find solution by songId
+     */
+    // SongId로 solution 찾기
     public SolutionDTO findSolutionBySongId(Long userId, Long songId) {
 
         SolutionDTO result = null;
@@ -117,5 +164,6 @@ public class SolutionService {
 
         return result;
     }
+
 
 }
