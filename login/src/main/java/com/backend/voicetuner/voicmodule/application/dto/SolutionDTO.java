@@ -12,6 +12,8 @@ public class SolutionDTO {
     private Long trackId;
     @JsonProperty("ai_answer")
     private String aiAnswer;
+    @JsonProperty("ai_short_answer")
+    private String aiShortAnswer;
     @JsonProperty("tempo_score")
     private float tempoScore;
     @JsonProperty("pitch_score")
@@ -28,6 +30,7 @@ public class SolutionDTO {
             Long songId,
             Long trackId,
             String aiAnswer,
+            String aiShortAnswer,
             float tempoScore,
             float pitchScore,
             String userVocalRange,
@@ -37,6 +40,7 @@ public class SolutionDTO {
             this.songId = songId;
             this.trackId = trackId;
             this.aiAnswer = aiAnswer;
+            this.aiShortAnswer = aiShortAnswer;
             this.tempoScore = tempoScore;
             this.pitchScore = pitchScore;
             this.userVocalRange = userVocalRange;
@@ -73,6 +77,14 @@ public class SolutionDTO {
 
     public void setAiAnswer(String aiAnswer) {
         this.aiAnswer = aiAnswer;
+    }
+
+    public String getAiShortAnswer() {
+        return aiShortAnswer;
+    }
+
+    public void setAiShortAnswer(String aiShortAnswer) {
+        this.aiShortAnswer = aiShortAnswer;
     }
 
     public float getTempoScore() {
@@ -114,6 +126,7 @@ public class SolutionDTO {
                 ", songId=" + songId +
                 ", trackId=" + trackId +
                 ", aiAnswer='" + aiAnswer + '\'' +
+                ", aiShortAnswer='" + aiShortAnswer + '\'' +
                 ", tempoScore=" + tempoScore +
                 ", pitchScore=" + pitchScore +
                 ", userVocalRange='" + userVocalRange + '\'' +

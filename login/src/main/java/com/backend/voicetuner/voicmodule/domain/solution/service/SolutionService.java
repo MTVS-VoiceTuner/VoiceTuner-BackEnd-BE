@@ -1,5 +1,6 @@
 package com.backend.voicetuner.voicmodule.domain.solution.service;
 
+import com.backend.voicetuner.login._core.jwt.JWTTokenProvider;
 import com.backend.voicetuner.login.refreshToken.repository.RefreshTokenRepository;
 import com.backend.voicetuner.voicmodule.application.dto.SolutionDTO;
 import com.backend.voicetuner.voicmodule.domain.solution.model.Solution;
@@ -14,17 +15,38 @@ import java.util.List;
 @Service
 public class SolutionService {
 
+    // JWTTokenProvider 주입
+    private JWTTokenProvider jwtTokenProvider;
+
     private SolutionRepository solutionRepository;
-    private RefreshTokenRepository refreshTokenRepository;
+
 
     @Autowired
-    public SolutionService(SolutionRepository solutionRepository) {
+    public SolutionService(SolutionRepository solutionRepository, JWTTokenProvider jwtTokenProvider) {
         this.solutionRepository = solutionRepository;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    @Autowired
-    public void setRefreshTokenRepository(RefreshTokenRepository refreshTokenRepository) {
-        this.refreshTokenRepository = refreshTokenRepository;
+    /**
+     * token으로 solution 찾기
+     * token -> userId -> solutionList
+     */
+    public List<SolutionDTO> findSolutionByAccessToken(String token) {
+
+        // accessToken에서 userId 추출
+        String userId = findUserIdByToken(token);
+        System.out.println("userId = " + userId);
+
+        return findSolutionsByUserId(Long.parseLong(userId));  // userId를 Long 타입으로 변환하여 사용
+    }
+
+    /**
+     * token으로 userId 찾기
+     */
+    public String findUserIdByToken(String token) {
+
+        // JWTTokenProvider를 사용해 accessToken에서 userId 추출
+        return jwtTokenProvider.getUserIdFromAccessToken(token);
     }
 
 
@@ -44,6 +66,7 @@ public class SolutionService {
                 solutionDTO.getSongId(),
                 solutionDTO.getTrackId(),
                 solutionDTO.getAiAnswer(),
+                solutionDTO.getAiShortAnswer(),
                 solutionDTO.getTempoScore(),
                 solutionDTO.getPitchScore(),
                 solutionDTO.getUserVocalRange(),
@@ -94,32 +117,16 @@ public class SolutionService {
         return solutionRepository.findByUserIdAndSongId(userId, songId);
     }
 
-
-
-    /**
-     * token으로 solution 찾기
-     * token -> userId -> solutionList
-     */
-    public List<SolutionDTO> findSolutionByAccessToken(String token) {
-
-        return findSolutionsByUserId(findUserIdByToken(token));
-
-    }
-
-    /**
-     * token으로 userId 찾기
-     */
-    public Long findUserIdByToken(String token) {
-
-        return refreshTokenRepository.findUserIdByRefreshToken(token);
-    }
-
     /**
      * find solution by userId
      */
     public List<SolutionDTO> findSolutionsByUserId(Long userId) {
 
         List<SolutionDTO> result = new ArrayList<>();
+
+        // 응답 확인용
+        System.out.println("findSolutionsByUserId_userId = " + userId);
+
         List<Solution> finds = solutionRepository.findAllByUserId(userId);
 
         for (Solution solution : finds) {
@@ -129,6 +136,7 @@ public class SolutionService {
                             solution.getSongId(),
                             solution.getTrackId(),
                             solution.getAiAnswer(),
+                            solution.getAiShortAnswer(),
                             solution.getTempoScore(),
                             solution.getPitchScore(),
                             solution.getUserVocalRange(),
@@ -136,6 +144,10 @@ public class SolutionService {
                     )
             );
         }
+
+        // 확인용
+        System.out.println("findSolutionsByUserId_finds = " + finds);
+        
         return result;
     }
 
@@ -155,6 +167,7 @@ public class SolutionService {
                     solution.getSongId(),
                     solution.getTrackId(),
                     solution.getAiAnswer(),
+                    solution.getAiShortAnswer(),
                     solution.getTempoScore(),
                     solution.getPitchScore(),
                     solution.getUserVocalRange(),

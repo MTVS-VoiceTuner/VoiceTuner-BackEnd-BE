@@ -18,7 +18,7 @@ public class RefreshToken {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 식별자를 자동으로 생성
     private Long id;
 
-    private String userName;
+    private String userId;
 
     private String ip;
 
@@ -28,8 +28,8 @@ public class RefreshToken {
     private String refreshToken;
 
     @Builder
-    public RefreshToken(String userName, String ip, Authority authorities, String refreshToken) {
-        this.userName = userName;
+    public RefreshToken(String userId, String ip, Authority authorities, String refreshToken) {
+        this.userId = userId;
         this.ip = ip;
         this.authorities = authorities;
         this.refreshToken = refreshToken;

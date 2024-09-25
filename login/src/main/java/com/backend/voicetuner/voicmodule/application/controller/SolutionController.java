@@ -23,10 +23,14 @@ public class SolutionController {
     // 토큰으로 userId를 찾은 후 전체 검색
     @GetMapping("/result")
     public ResponseEntity<?> findSolutionByToken(@RequestHeader("Authorization") String token) {
+
         // "Bearer " 문자열 제거 후 실제 토큰 값만 추출
         String accessToken = token.startsWith("Bearer ") ? token.substring(7) : token;
 
+        // findSolutionByAccessToken 호출
         List<SolutionDTO> response = solutionService.findSolutionByAccessToken(accessToken);
+
+        System.out.println("response = " + response);
 
         if (response.isEmpty()) {
             return ResponseEntity.noContent().build();

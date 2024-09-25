@@ -155,4 +155,12 @@ public class JWTTokenProvider {
 
         return null;
     }
+
+    // AccessToken에서 userId를 추출하는 메서드 추가
+    public String getUserIdFromAccessToken(String accessToken) {
+        Claims claims = parseClaims(accessToken);
+        return claims.getSubject();  // subject는 userId로 설정됨
+    }
+
+
 }

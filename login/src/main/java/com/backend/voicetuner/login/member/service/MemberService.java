@@ -121,7 +121,7 @@ public class MemberService {
         }
 
         refreshTokenRepository.save(RefreshToken.builder()
-                .userName(authentication.getName())
+                .userId(authentication.getName())
                 .ip(ClientUtils.getClientIp(httpServletRequest))
                 .authorities(authority)
                 .refreshToken(authTokenDTO.refreshToken())

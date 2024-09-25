@@ -6,41 +6,46 @@ import jakarta.persistence.*;
 public class Solution {
 
     @Id
-    @Column(name="SOLUTION_ID")
+    @Column(name = "SOLUTION_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long solutionId;
 
-    @Column(name="USER_ID", nullable = false)
+    @Column(name = "USER_ID", nullable = false)
     public Long userId;
 
-    @Column(name="SONG_ID", nullable = false)
+    @Column(name = "SONG_ID", nullable = false)
     public Long songId;
 
-    @Column(name="TRACK_ID")
+    @Column(name = "TRACK_ID")
     public Long trackId;
 
-    @Column(name="AI_ANSWER", columnDefinition = "TEXT")
+    @Column(name = "AI_ANSWER", columnDefinition = "TEXT")
     public String aiAnswer;
 
-    @Column(name="TEMPO_SCORE")
+    @Column(name = "AI_SHORT_ANSWER")
+    public String aiShortAnswer;
+
+    @Column(name = "TEMPO_SCORE")
     public float tempoScore;
 
-    @Column(name="PITCH_SCORE")
+    @Column(name = "PITCH_SCORE")
     public float pitchScore;
 
-    @Column(name="USER_VOCAL_RANGE")
+    @Column(name = "USER_VOCAL_RANGE")
     public String userVocalRange;
 
-    @Column(name="FINAL_SCORE")
+    @Column(name = "FINAL_SCORE")
     public float finalScore;
 
-    public Solution() {}
+    public Solution() {
+    }
 
     public Solution(
             Long userId,
             Long songId,
             Long trackId,
             String aiAnswer,
+            String aiShortAnswer,
             float tempoScore,
             float pitchScore,
             String userVocalRange,
@@ -49,6 +54,7 @@ public class Solution {
         this.songId = songId;
         this.trackId = trackId;
         this.aiAnswer = aiAnswer;
+        this.aiShortAnswer = aiShortAnswer;
         this.tempoScore = tempoScore;
         this.pitchScore = pitchScore;
         this.userVocalRange = userVocalRange;
@@ -73,6 +79,10 @@ public class Solution {
 
     public String getAiAnswer() {
         return aiAnswer;
+    }
+
+    public String getAiShortAnswer() {
+        return aiShortAnswer;
     }
 
     public float getTempoScore() {
@@ -107,6 +117,10 @@ public class Solution {
         this.aiAnswer = aiAnswer;
     }
 
+    public void setAiShortAnswer(String aiShortAnswer) {
+        this.aiShortAnswer = aiShortAnswer;
+    }
+
     public void setTempoScore(float tempoScore) {
         this.tempoScore = tempoScore;
     }
@@ -131,6 +145,7 @@ public class Solution {
                 ", songId=" + songId +
                 ", trackId=" + trackId +
                 ", aiAnswer='" + aiAnswer + '\'' +
+                ", aiShortAnswer='" + aiShortAnswer + '\'' +
                 ", tempoScore=" + tempoScore +
                 ", pitchScore=" + pitchScore +
                 ", userVocalRange='" + userVocalRange + '\'' +
