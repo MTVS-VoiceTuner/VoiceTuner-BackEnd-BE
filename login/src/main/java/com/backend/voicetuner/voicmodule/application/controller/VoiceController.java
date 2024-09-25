@@ -237,7 +237,7 @@ public class VoiceController {
     @Operation(summary = "솔루션 저장", description = "이거 테스트 해야함")
     @PostMapping(value = "/saveSolutionTest", produces = MediaType.APPLICATION_JSON_VALUE, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public SolutionDTO saveSolutionTest(
-            @RequestPart("voice-data") VoiceDataDTO voiceData,
+            @RequestPart("info") VoiceDataDTO voiceData,
             @RequestPart("audio-file") MultipartFile file
     ) throws IOException, ParseException {
 
