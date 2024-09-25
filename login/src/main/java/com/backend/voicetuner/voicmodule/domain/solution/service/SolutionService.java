@@ -145,9 +145,6 @@ public class SolutionService {
             );
         }
 
-        // 확인용
-        System.out.println("findSolutionsByUserId_finds = " + finds);
-        
         return result;
     }
 

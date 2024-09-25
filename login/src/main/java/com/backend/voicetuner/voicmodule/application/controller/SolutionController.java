@@ -30,8 +30,6 @@ public class SolutionController {
         // findSolutionByAccessToken 호출
         List<SolutionDTO> response = solutionService.findSolutionByAccessToken(accessToken);
 
-        System.out.println("response = " + response);
-
         if (response.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
