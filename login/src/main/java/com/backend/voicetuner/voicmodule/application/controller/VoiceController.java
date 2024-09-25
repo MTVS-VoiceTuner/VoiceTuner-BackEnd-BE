@@ -3,6 +3,7 @@ package com.backend.voicetuner.voicmodule.application.controller;
 import com.backend.voicetuner.voicmodule.application.config.WebClientUtil;
 import com.backend.voicetuner.voicmodule.application.dto.AudioDTO;
 import com.backend.voicetuner.voicmodule.application.dto.SolutionDTO;
+import com.backend.voicetuner.voicmodule.application.dto.VoiceDataDTO;
 import com.backend.voicetuner.voicmodule.domain.solution.service.SolutionService;
 import com.nimbusds.jose.shaded.gson.JsonObject;
 import io.swagger.v3.oas.annotations.Operation;
@@ -123,7 +124,7 @@ public class VoiceController {
     /**
      * wav 파일로 전체 곡 전송(저장 o) - sendSaveSolution
      */
-    
+
     @Operation(summary = "wav 한 소절 전송", description = "이거 테스트 해야함")
     @PostMapping(value = "/sendSaveSolution", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public SolutionDTO saveSolution(
@@ -170,7 +171,7 @@ public class VoiceController {
 
         // 확인용
         System.out.println(result);
-        
+
         // 결과 저장 - update -> record
 
         solutionService.recordSolution(result);
@@ -229,8 +230,54 @@ public class VoiceController {
         }
     }
 
+    /**
+     * 솔루션 저장 api
+     */
+
+    @Operation(summary = "솔루션 저장", description = "이거 테스트 해야함")
+    @PostMapping(value = "/saveSolutionTest", produces = MediaType.APPLICATION_JSON_VALUE, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public SolutionDTO saveSolutionTest(
+            @RequestPart("voice-data") VoiceDataDTO voiceData,
+            @RequestPart("audio-file") MultipartFile file
+    ) throws IOException, ParseException {
+
+        // 확인용 로그
+        System.out.printf("userId:%s%n", voiceData.getUserId());
+        System.out.printf("songId:%s%n", voiceData.getSongId());
+
+        MultipartBodyBuilder builder = new MultipartBodyBuilder();
+        builder.part("audio_file", file.getResource());
+
+        // 결과지 SolutionDTO에 저장
+        SolutionDTO result = webClient.method(HttpMethod.POST)
+                .uri("https://crappie-emerging-logically.ngrok-free.app/vocal/upload-wav-feedback")
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .body(BodyInserters.fromMultipartData(builder.build()))
+                .httpRequest(request -> {
+
+                    HttpClientRequest reactorRequest = request.getNativeRequest();
+                    reactorRequest.responseTimeout(Duration.ofDays(3));
+                })
+                .retrieve()
+                .bodyToMono(SolutionDTO.class)
+                .block();
+
+
+        // 확인용
+        System.out.println(result);
+
+        result.setUserId(voiceData.getUserId());
+        result.setSongId(voiceData.getSongId());
+
+        // 결과 저장 - update -> record
+
+        solutionService.recordSolution(result);
+
+        return result;
+    }
+
 /**
- 인코딩 방식
+인코딩 방식
  */
 /*
 
