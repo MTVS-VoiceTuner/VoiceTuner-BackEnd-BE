@@ -1,17 +1,25 @@
 # VoiceTuner-BackEnd-BE
 
-### 1. 브랜치는 이슈 단위로 생성
+VoiceTuner
 
-### 2. dev에 올리고 develop필요 없으면 브랜치 삭제
+## :dart: Goal ##
 
-### 3. 파트 나눠서 진행하고 코드 리뷰하면서 모든 파트 숙지하고 가져가기
+Backend server for AI vocal training service
+
+## :rocket: Technologies ##
+
+The following tools were used in this project:
+
+[![My Skills](https://skillicons.dev/icons?i=spring,mysql)](https://skillicons.dev)
 
 
-# 프로토타입(9/9)
+## :building_construction: Architecture ##
 
-1. 소셜 로그인 → JWT 로그인
-2. RestTemplate 활용해서 10초길이의 음성 파일보내기
-    - base64를 사용하여 음성파일을 인코딩하여 전달
-# 알파(9/23)
-1. db 설계
-# 베타(9/27)
+
+## Login ##
+
+
+## Map & Home ##
+
+
+## Music ##
