@@ -67,15 +67,6 @@
   <img src="https://github.com/user-attachments/assets/3afb8349-3fad-4333-a387-4d868bc77d3c" alt="전체 아키텍처" width="900"/>
 </div>
 
-### 🧱 5-2. 아키텍처 [상세](https://github.com/MTVS3rd-MariMo/Marimo-BE/wiki/Architecture)
-
-### 🗺️ 5-3. Context Map [상세](https://github.com/MTVS3rd-MariMo/Marimo-BE/wiki/Context)
-
-### 📦 5-4. Aggregate
-<div align="center">
-  <img src="https://github.com/user-attachments/assets/cae38d98-acf9-4f01-80c1-93df41d5bc26" alt="도메인 주도 설계" width="700"/>
-</div>
-
 ## ✨ 6. 기능 소개
 ### 🔑 6-1. 회원가입, 로그인
 - 선생님, 학생을 선택한 뒤 학교, 학년, 반, 학생 번호, 이름, 비밀번호로 회원가입한다.
@@ -104,4 +95,3 @@
 - 참가한 수업을 조회하고 수업에서 찍은 단체사진을 최신순으로 확인한다.
 ### 🗃️ 6-9. 선생님 수업 기록 조회
 - 참가한 수업을 조회하고 수업에 참가한 학생들의 활동 기록을 최신순으로 조회한다.
-
