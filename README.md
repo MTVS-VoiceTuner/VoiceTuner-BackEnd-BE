@@ -21,9 +21,8 @@
   |                                               김도현                                               |                                               김재협                                               |                                              정현민                                                |
   |:-------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------:|
 | <img src = "https://avatars.githubusercontent.com/u/94904427?v=4" width = "100" height = "100"> | <img src = "https://avatars.githubusercontent.com/u/73402982?v=4" width = "100" height = "100"> | <img src = "https://avatars.githubusercontent.com/u/148692050?v=4" width = "100" height = "100"> |
-|                             [@syamcat](https://github.com/syamcat)                              |                           [@YachaTree](https://github.com/YachaTree)                            |                             [@VIRTUKCH](https://github.com/VIRTUKCH)                             |
+|                             [@syamcat](https://github.com/syamcat)                              |                           [@YachaTree](https://github.com/YachaTree)                            |                             [@JungHyeonmin](https://github.com/JungHyeonmin)                             |
 
-  
 </div>
 
 ## 👨‍💻 3. 프로젝트 환경
@@ -44,14 +43,24 @@
 </div>
 
 ## 🎯 4. 담당 역할
-- AI와 Unity 간 통신 기능 구현
-- 회원 관리
-- 선생님 온작품읽기 자료 관리, 학생 수업 결과 조회 기능 구현
-- 학생 수업 활동 기록 및 결과 조회 기능 구현
-- GitHub Actions를 활용한 CI/CD 파이프라인 구현
-- AWS EC2와 Docker를 활용한 서버 배포 및 데이터베이스 구축 및 관리
-- API 사용 편의성을 위한 Swagger 문서를 활용한 API 문서화
-  
+
+### 김도현
+- Unreal Engine과 AI 서버 간 음성 및 텍스트 데이터를 효율적으로 전송할 수 있는 파이프라인 구축
+- REST API 설계를 통해 사용자의 피드백 조회 기능 구현
+- DataBase 구축
+
+### 김재협
+- Unreal Engine과 AI 서버 간 음성 및 텍스트 데이터를 효율적으로 전송할 수 있는 파이프라인 구축
+- REST API 설계를 통해 사용자의 피드백 조회 기능 구현
+- JWT 로그인 구현
+
+### 정현민
+- Unreal Engine과 AI 서버 간 음성 및 텍스트 데이터를 효율적으로 전송할 수 있는 파이프라인 구축
+- REST API 설계를 통해 모바일 및 PC에서 사용자의 피드백 조회 기능 구현
+- 사용자가 피드백을 프로그램 밖에서도 조회할 수 있도록 모바일, 웹페이지에 맞도록 React 기반 웹페이지 개발
+- YouTube Data API를 활용해 사용자의 AI 피드백에 기반한 맞춤형 연습 영상 추천 기능 구현
+
+
 ## 🌐 5. 프로젝트 아키텍처
 ### 🏗️ 5-1. Service Architecture
 <div align="center">
