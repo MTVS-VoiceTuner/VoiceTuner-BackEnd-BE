@@ -1,5 +1,5 @@
 # 📖VoiceTuner
-메타버스와 AI를 결합한 비대면 보컬 트레이닝 솔루션
+메타버스와 AI를 결합한 비대면 보컬 트레이닝 프로그램
 
 ## 📜 1. 프로젝트 소개
 <div align="center">
@@ -15,12 +15,16 @@
   </a>
 </div>
 
-## 👥 2. 팀원 소개
+## 👥 2. Back-End 팀원 소개
+<div align="center">
 
-|                                               [XR]용도원                                               |                                               [XR]공혜지                                               |                                               [XR]박효근                                                |                                               [TA]박소현                                                |                                               [AI]박예지                                                |                                               [AI]손수연                                                |                                               [BE]정현민                                                |
-|:-----------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------:|
-| <img width="107" alt="용도원 마리모" src="https://github.com/user-attachments/assets/6afc1604-2baa-4608-bb70-96e62daef287"> | <img width="106" alt="공혜지 마리모" src="https://github.com/user-attachments/assets/69087b21-926c-48a5-8732-ca203392b683"> | <img width="112" alt="박효근 마리모" src="https://github.com/user-attachments/assets/96016f29-ed42-4fdd-a9da-50b4c32bc922"> | <img width="104" alt="박소현 마리모" src="https://github.com/user-attachments/assets/d5d58006-b7b7-499b-99db-59a91a2f9b1d"> | <img width="106" alt="박예지 마리모" src="https://github.com/user-attachments/assets/7dbbeaaa-cfc4-4fb1-ada5-0922d9d8ab6f"> | <img width="106" alt="손수연 마리모" src="https://github.com/user-attachments/assets/2242a533-a60c-47c2-b79d-74a993252ba2"> | <img width="107" alt="정현민 마리모" src="https://github.com/user-attachments/assets/73fc7216-0dda-418a-900f-2dbcf7a5cfbb"> |
-|                             [@anditsoon](https://github.com/anditsoon)                              |                           [@hzkkong](https://github.com/hzkkong)                            |                             [@RootPHG](https://github.com/RootPHG)                             |                              [@goongoontroli](https://github.com/goongoontroli)                         |                             [@yeji79](https://github.com/yeji79)                             |                         [@giraffeleg](https://github.com/giraffeleg)                         |                               [@JungHyeonmin](https://github.com/JungHyeonmin)                               |
+  |                                               김도현                                               |                                               김재협                                               |                                              정현민                                                |
+  |:-------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------:|
+| <img src = "https://avatars.githubusercontent.com/u/94904427?v=4" width = "100" height = "100"> | <img src = "https://avatars.githubusercontent.com/u/73402982?v=4" width = "100" height = "100"> | <img src = "https://avatars.githubusercontent.com/u/148692050?v=4" width = "100" height = "100"> |
+|                             [@syamcat](https://github.com/syamcat)                              |                           [@YachaTree](https://github.com/YachaTree)                            |                             [@VIRTUKCH](https://github.com/VIRTUKCH)                             |
+
+  
+</div>
 
 ## 👨‍💻 3. 프로젝트 환경
 
@@ -32,16 +36,7 @@
   <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> 
 </div>
 
-### 🚀 3-2. 배포
-<div align=center> 
-  <img src="https://img.shields.io/badge/amazonaw ec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white">
-  <img src="https://img.shields.io/badge/amazonaw rds-527FFF?style=for-the-badge&logo=amazonrds&logoColor=white">
-  <img src="https://img.shields.io/badge/amazonaw s3-569A31?style=for-the-badge&logo=amazons3&logoColor=white">
-  <img src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white">
-  <img src="https://img.shields.io/badge/GitHub Action-2088FF?style=for-the-badge&logo=githubactions&logoColor=white">
-</div>
-
-### 🤝 3-3. 협업 툴
+### 🤝 3-2. 협업 툴
 <div align=center> 
   <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
   <img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white">
@@ -101,11 +96,3 @@
 ### 🗃️ 6-9. 선생님 수업 기록 조회
 - 참가한 수업을 조회하고 수업에 참가한 학생들의 활동 기록을 최신순으로 조회한다.
 
-## 7. 배포
-### aws
-- `Elastic Beanstalk`을 사용하여 애플리케이션을 배포하고, `EC2` 인스턴스를 통해 서버를 운용한다.
-- `RDS`를 사용하여 데이터베이스를 운영하며, `Elastic Beanstalk` 환경에 통합하여 안전한 연결을 지원한다.
-- `S3`를 사용하여 아바타 이미지와 애니메이션, 배경 이미지를 저장한다.
-### CI/CD
-- GitHub Actions를 사용하여 `Docker` 이미지를 ECR에 등록하고, Elastic Beanstalk으로 배포한다.
-- Elastic Beanstalk 환경에서 `Dockerrun.aws.json` 파일을 사용하여 Docker 컨테이너를 설정하고 실행한다.
