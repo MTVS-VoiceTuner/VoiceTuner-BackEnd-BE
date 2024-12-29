@@ -67,7 +67,10 @@
   <img src="https://github.com/user-attachments/assets/a1e23439-5a05-4620-a69c-92021c710da5" alt="인프라 아키텍처" width="900"/>
 </div>
 
-### 🧱 5-2. 아키텍처 [상세](https://github.com/MTVS3rd-MariMo/Marimo-BE/wiki/Architecture)
+### 🧱 5-2. 음성파일 전달 아키텍처
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/eb2c8cfc-d9c7-44e4-88b9-e7d5cffb08bf" alt="음성파일 전달 아키텍처" width="900"/>
+</div>
 
 ## ✨ 6. 기능 소개
 ### 🔑 6-1. 회원가입, 로그인
