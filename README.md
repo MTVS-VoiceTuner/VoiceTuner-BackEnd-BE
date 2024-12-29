@@ -64,7 +64,7 @@
 ## 🌐 5. 프로젝트 아키텍처
 ### 🏗️ 5-1. Service Architecture
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/3afb8349-3fad-4333-a387-4d868bc77d3c" alt="전체 아키텍처" width="900"/>
+  <img src="https://github.com/user-attachments/assets/472a53d0-9657-4a4c-abc6-8c8197988b4d" alt="인프라 아키텍처" width="900"/>
 </div>
 
 ## ✨ 6. 기능 소개
