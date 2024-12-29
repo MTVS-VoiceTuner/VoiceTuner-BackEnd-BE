@@ -35,3 +35,14 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### .env ###
+.env
+
+### .gitignore ###
+.gitignore
+login/.gitignore
+
+### yml ###
+/Users/junghyeonmin/Documents/project/voicetuner/VoiceTuner-BackEnd-BE/login/src/main/resources/application.yml
+login/src/main/resources/application.yml
